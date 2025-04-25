@@ -50,14 +50,28 @@ body{
 .nav-search::placeholder{
     color: #757575;
 }
+.productsWrapper{
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
 .featuredSection{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
     flex-wrap: wrap;
+    padding: 20px;
 }
 .featuredItem{
-    margin: 10px;
+    flex: 1 1 250px;
+    text-align: center;
     border-radius: 4px;
-
+    min-width: 200px;
+}
+.featuredItem img{
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
 }
