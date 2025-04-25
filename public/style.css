@@ -60,12 +60,12 @@ body{
     width: 80%;
     margin: 0 auto;
     padding: 20px 0;
-
+    background-color: #FFFFFF;
     outline: 1px solid #B71C1C;
 }
 .sectionHeader{
     margin: 0 auto;
-    width: 80%;
+    width: 100%;
     padding: 20px 0;
 
     outline: 1px solid #B71C1C;
@@ -107,11 +107,32 @@ body{
 
     outline: 1px solid #B71C1C;
 }
-.category,.popularProduct{
+.category{
     flex: 1 1 22%;
     text-align: center;
     padding: 20px;
     border-radius: 4px;
+    flex-direction: column;
 
     outline: 1px solid #B71C1C;
+}
+.popWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+.popularProduct{
+    flex: 1 1 22%;
+    text-align: center;
+    border-radius: 4px;
+    flex-direction: column;
+
+    outline: 1px solid #B71C1C;
+}
+.addToCart-btn{
+    width: 100%;
+    margin: 0;
+    padding: 20px
+
 }
