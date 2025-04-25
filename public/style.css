@@ -3,6 +3,8 @@ body{
     background-color: #FAF9F6;
     display: flex;
     flex-direction: column;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
 }
 
 /* Start of Navbar stuff */
@@ -14,7 +16,7 @@ body{
     position: sticky;
     top: 0;
     width: 100%;
-
+    font-family: "Open Sans", sans-serif;
     transition: transform 0.7s ease-in-out;
     transform: translateY(0);
     z-index: 1000;
@@ -58,39 +60,58 @@ body{
     width: 80%;
     margin: 0 auto;
     padding: 20px 0;
+
+    outline: 1px solid #B71C1C;
+}
+.sectionHeader{
+    margin: 0 auto;
+    width: 80%;
+    padding: 20px 0;
+
+    outline: 1px solid #B71C1C;
 }
 .featuredSection{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 20px;
     flex-wrap: wrap;
     padding: 20px;
+
+    outline: 1px solid #B71C1C;
 }
 .featuredItem{
     flex: 1 1 250px;
     text-align: center;
     border-radius: 4px;
     min-width: 200px;
+    justify-content: center;
+
+  outline: 1px solid #B71C1C;
 }
 .featuredItem img{
+    
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     border-radius: 4px;
 }
-.catSection{
+.catSection,.popularSection{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
+
+    outline: 1px solid #B71C1C;
 }
-.category{
+.category,.popularProduct{
     flex: 1 1 22%;
     text-align: center;
     padding: 20px;
     border-radius: 4px;
-    border: 1px solid #B71C1C;
+
+    outline: 1px solid #B71C1C;
 }
