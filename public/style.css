@@ -1,0 +1,39 @@
+body{
+    margin: 0;
+    background-color: #FAF9F6;
+}
+
+#navbar{
+    background-color: #212121;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.nav-btn{
+    background-color: #D32F2F;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    line-height: 1.5rem;
+    padding: 5px 10px;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 5px;
+}
+.nav-btn:hover{
+    background-color: #FFD600;
+    color: black;
+}
+.nav-search{
+    background-color: #FFFDE7;
+    color: 212121;
+    border: 0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    line-height: 1.5rem;
+    margin: 5px;
+}
+.nav-search::placeholder{
+    color: #757575;
+}
