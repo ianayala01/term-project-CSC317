@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css"/>
+    </head>
+    <body>
+        <div id="navbar">
+            <img src="./images/logo.png" alt ="Logo for the Quick Stopify e-commerce site" style="width: 45px"/>
+            <button class="nav-btn">Home</button>
+            <button class="nav-btn">Shop</button>
+        
+            <form>
+                <input type="text" placeholder="Search..." name="q" class="nav-search">
+                <button type="submit" class="nav-btn">🔍</button>
+            </form>
+        </div>
+        <div id="forms">
+        
+            <h1>Welcome to Quick Stopify!</h1>
+
+            <div id="login-form">
+                <h2>Login</h2>
+                <form class="fields">
+                    <input class="login-info" type="text" placeholder="Username" required/>
+                    <input class="login-info" type="password" placeholder="Password" required/>
+                    <button class="submit-btn" type="submit">Submit</button>
+                </form>
+                <p>Don't have an accoount? <a href="#" id="show-register">Register here!</a></p>
+            </div>
+
+            <div id="register-form" style="display:none;">
+                <h2>Register</h2>
+                <form class="fields">
+                    <input class="login-info" type="text" placeholder="Username" required/>
+                    <input class="login-info" type="email" placeholder="Email" required/>
+                    <input class="login-info" type="password" placeholder="Password" required/>
+                    <button class="submit-btn" type="submit">Submit</button>
+                </form>
+                <p>Already have an account? <a href="#" id="show-login">Log in</a></p>
+            </div>
+        </div>
+    </div>
+    <script  src="script.js"></script>
+    <script>
+        //Login and registration toggle
+        document.getElementById("show-register").addEventListener("click", function (e) {
+            e.preventDefault();
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("register-form").style.display = "block";
+        });
+      
+        document.getElementById("show-login").addEventListener("click", function (e) {
+            e.preventDefault();
+            document.getElementById("register-form").style.display = "none";
+            document.getElementById("login-form").style.display = "block";
+        });
+      </script>
+    </body>
+</html>

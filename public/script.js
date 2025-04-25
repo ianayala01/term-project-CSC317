@@ -1,3 +1,4 @@
+//implements the hidden navbar function
 let lastScrollTop = 0;
 const navbar = document.getElementById("navbar");
 
@@ -12,3 +13,9 @@ window.addEventListener("scroll", () => {
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
+
+//redirects to login/register page when account btn is clicked
+document.getElementById("account-btn").addEventListener("click", function () {
+    window.location.href = "login.html";
+});
+
