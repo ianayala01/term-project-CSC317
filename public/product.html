@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Essentials - Product Details</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3e26a1e3ce.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="/">Travel<span>Essentials</span></a>
+        </div>
+        <div class="search-bar">
+          <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="Search products..." required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li class="auth-nav"><a href="/login">Login</a></li>
+          <li class="auth-nav"><a href="/register">Register</a></li>
+          <li class="profile-nav" style="display: none;"><a href="/profile">My Account</a></li>
+          <li><a href="/cart" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Product Detail Section -->
+  <section class="product-detail">
+    <div class="container">
+      <div class="alert-container"></div>
+      
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="/">Home</a> &gt;
+        <a href="/search">Products</a> &gt;
+        <span class="product-name">Product Name</span>
+      </div>
+      
+      <div class="product-container">
+        <div class="product-gallery">
+          <!-- Product image will be loaded dynamically -->
+          <div class="skeleton-image"></div>
+        </div>
+        
+        <div class="product-content">
+          <h1 class="product-title skeleton-text"></h1>
+          
+          <div class="product-meta">
+            <span class="category skeleton-text"></span>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>(4.5)</span>
+            </div>
+          </div>
+          
+          <div class="price skeleton-text"></div>
+          
+          <div class="product-description skeleton-text">
+            <!-- Product description will be loaded dynamically -->
+          </div>
+          
+          <div class="quantity-control">
+            <button class="decrease-quantity">-</button>
+            <input type="number" value="1" min="1" max="10">
+            <button class="increase-quantity">+</button>
+          </div>
+          
+          <button class="btn btn-primary add-to-cart-btn" data-product-id="">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+          
+          <div class="product-meta-info">
+            <div><i class="fas fa-shipping-fast"></i> Free shipping on orders over $50</div>
+            <div><i class="fas fa-undo"></i> 30-day return policy</div>
+            <div><i class="fas fa-shield-alt"></i> 1-year warranty</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product Tabs -->
+      <div class="product-tabs">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="description">Description</button>
+          <button class="tab-btn" data-tab="specifications">Specifications</button>
+          <button class="tab-btn" data-tab="reviews">Reviews</button>
+        </div>
+        
+        <div class="tabs-content">
+          <div class="tab-panel active" id="description">
+            <div class="product-full-description">
+              <!-- Full product description will be loaded dynamically -->
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="specifications">
+            <table class="specs-table">
+              <tbody>
+                <!-- Specifications will be loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="tab-panel" id="reviews">
+            <div class="reviews-container">
+              <!-- Reviews will be loaded dynamically -->
+              <div class="no-reviews">
+                <p>There are no reviews yet for this product.</p>
+                <button class="btn btn-secondary write-review-btn">Write a Review</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Related Products -->
+      <div class="related-products">
+        <h2>You May Also Like</h2>
+        <div class="products-grid">
+          <!-- Related products will be loaded dynamically -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <a href="/">Travel<span>Essentials</span></a>
+          </div>
+          <p>Your one-stop shop for all travel and lifestyle essentials. We help travelers stay equipped, comfortable, and inspired on their journeys.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/search">Products</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="/search?category=Bags">Bags</a></li>
+            <li><a href="/search?category=Electronics">Electronics</a></li>
+            <li><a href="/search?category=Accessories">Accessories</a></li>
+            <li><a href="/search?category=Comfort">Comfort</a></li>
+            <li><a href="/search?category=Organization">Organization</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
+            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Travel Essentials. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js"></script>
+  <script src="/js/cart.js"></script>
+  <script>
+    // Product Tabs Functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class from all buttons and panels
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabPanels.forEach(panel => panel.classList.remove('active'));
+          
+          // Add active class to clicked button and corresponding panel
+          button.classList.add('active');
+          const tabId = button.dataset.tab;
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Quantity Control
+      const decreaseBtn = document.querySelector('.decrease-quantity');
+      const increaseBtn = document.querySelector('.increase-quantity');
+      const quantityInput = document.querySelector('.quantity-control input');
+      
+      if (decreaseBtn && increaseBtn && quantityInput) {
+        decreaseBtn.addEventListener('click', () => {
+          const currentValue = parseInt(quantityInput.value);
+          if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+          }
+        });
+        
+        increaseBtn.addEventListener('click', () => {
+          const currentValue = parseInt(quantityInput.value);
+          const maxValue = parseInt(quantityInput.max);
+          if (currentValue < maxValue) {
+            quantityInput.value = currentValue + 1;
+          }
+        });
+        
+        quantityInput.addEventListener('change', () => {
+          const value = parseInt(quantityInput.value);
+          const maxValue = parseInt(quantityInput.max);
+          
+          if (value < 1) {
+            quantityInput.value = 1;
+          } else if (value > maxValue) {
+            quantityInput.value = maxValue;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

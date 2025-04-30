@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Essentials - Search Products</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3e26a1e3ce.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="/">Travel<span>Essentials</span></a>
+        </div>
+        <div class="search-bar">
+          <form action="/search" method="GET" class="search-form">
+            <input type="text" name="query" placeholder="Search products..." class="search-input" required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li class="auth-nav"><a href="/login">Login</a></li>
+          <li class="auth-nav"><a href="/register">Register</a></li>
+          <li class="profile-nav" style="display: none;"><a href="/profile">My Account</a></li>
+          <li><a href="/cart" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Search Results Section -->
+  <section class="search-container">
+    <div class="container">
+      <div class="alert-container"></div>
+      
+      <div class="search-header">
+        <h1>Search Results</h1>
+        <p class="search-query">Showing results for: <span id="search-term"></span></p>
+      </div>
+      
+      <div class="search-content">
+        <div class="filters-sidebar">
+          <div class="filter-section">
+            <h3>Categories</h3>
+            <div class="filter-options category-filters">
+              <!-- Categories will be loaded dynamically -->
+              <div class="loading-spinner">Loading...</div>
+            </div>
+          </div>
+          
+          <div class="filter-section">
+            <h3>Price Range</h3>
+            <div class="price-slider">
+              <div class="range-inputs">
+                <input type="range" min="0" max="200" value="0" class="min-price-slider">
+                <input type="range" min="0" max="200" value="200" class="max-price-slider">
+              </div>
+              <div class="price-inputs">
+                <div class="price-input">
+                  <label for="min-price">Min:</label>
+                  <input type="number" id="min-price" min="0" max="200" value="0">
+                </div>
+                <div class="price-input">
+                  <label for="max-price">Max:</label>
+                  <input type="number" id="max-price" min="0" max="200" value="200">
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary apply-price-filter">Apply</button>
+            </div>
+          </div>
+          
+          <div class="filter-section">
+            <h3>Sort By</h3>
+            <div class="filter-options">
+              <select id="sort-options" class="form-control">
+                <option value="default">Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+              </select>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-primary reset-filters">Reset Filters</button>
+        </div>
+        
+        <div class="search-results">
+          <div class="search-results-count">
+            <span id="results-count">0</span> products found
+          </div>
+          
+          <div class="products-grid">
+            <!-- Search results will be loaded dynamically -->
+            <div class="loading-spinner">Loading products...</div>
+          </div>
+          
+          <div class="pagination">
+            <!-- Pagination will be loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <a href="/">Travel<span>Essentials</span></a>
+          </div>
+          <p>Your one-stop shop for all travel and lifestyle essentials. We help travelers stay equipped, comfortable, and inspired on their journeys.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/search">Products</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="/search?category=Bags">Bags</a></li>
+            <li><a href="/search?category=Electronics">Electronics</a></li>
+            <li><a href="/search?category=Accessories">Accessories</a></li>
+            <li><a href="/search?category=Comfort">Comfort</a></li>
+            <li><a href="/search?category=Organization">Organization</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
+            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Travel Essentials. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js"></script>
+  <script src="/js/cart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get search parameters from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get('query') || '';
+      const category = urlParams.get('category') || '';
+      
+      // Update search term display
+      const searchTermEl = document.getElementById('search-term');
+      if (searchTermEl) {
+        searchTermEl.textContent = searchQuery || category || 'All Products';
+      }
+      
+      // Update search input
+      const searchInput = document.querySelector('.search-input');
+      if (searchInput && searchQuery) {
+        searchInput.value = searchQuery;
+      }
+      
+      // Price range slider functionality
+      const minPriceSlider = document.querySelector('.min-price-slider');
+      const maxPriceSlider = document.querySelector('.max-price-slider');
+      const minPriceInput = document.getElementById('min-price');
+      const maxPriceInput = document.getElementById('max-price');
+      
+      if (minPriceSlider && maxPriceSlider && minPriceInput && maxPriceInput) {
+        // Set initial values from URL parameters
+        const minPrice = urlParams.get('min_price');
+        const maxPrice = urlParams.get('max_price');
+        
+        if (minPrice) {
+          minPriceSlider.value = minPrice;
+          minPriceInput.value = minPrice;
+        }
+        
+        if (maxPrice) {
+          maxPriceSlider.value = maxPrice;
+          maxPriceInput.value = maxPrice;
+        }
+        
+        // Update input when slider changes
+        minPriceSlider.addEventListener('input', () => {
+          minPriceInput.value = minPriceSlider.value;
+          
+          // Make sure min price doesn't exceed max price
+          if (parseInt(minPriceSlider.value) > parseInt(maxPriceSlider.value)) {
+            maxPriceSlider.value = minPriceSlider.value;
+            maxPriceInput.value = minPriceSlider.value;
+          }
+        });
+        
+        maxPriceSlider.addEventListener('input', () => {
+          maxPriceInput.value = maxPriceSlider.value;
+          
+          // Make sure max price doesn't go below min price
+          if (parseInt(maxPriceSlider.value) < parseInt(minPriceSlider.value)) {
+            minPriceSlider.value = maxPriceSlider.value;
+            minPriceInput.value = maxPriceSlider.value;
+          }
+        });
+        
+        // Update slider when input changes
+        minPriceInput.addEventListener('change', () => {
+          minPriceSlider.value = minPriceInput.value;
+          
+          // Make sure min price doesn't exceed max price
+          if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
+            maxPriceInput.value = minPriceInput.value;
+            maxPriceSlider.value = minPriceInput.value;
+          }
+        });
+        
+        maxPriceInput.addEventListener('change', () => {
+          maxPriceSlider.value = maxPriceInput.value;
+          
+          // Make sure max price doesn't go below min price
+          if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
+            minPriceInput.value = maxPriceInput.value;
+            minPriceSlider.value = maxPriceInput.value;
+          }
+        });
+        
+        // Apply price filter
+        const applyPriceFilterBtn = document.querySelector('.apply-price-filter');
+        if (applyPriceFilterBtn) {
+          applyPriceFilterBtn.addEventListener('click', () => {
+            // Update URL with new price parameters
+            urlParams.set('min_price', minPriceInput.value);
+            urlParams.set('max_price', maxPriceInput.value);
+            
+            window.location.search = urlParams.toString();
+          });
+        }
+      }
+      
+      // Sort by functionality
+      const sortOptions = document.getElementById('sort-options');
+      if (sortOptions) {
+        // Set initial value from URL parameters
+        const sortBy = urlParams.get('sort');
+        if (sortBy) {
+          sortOptions.value = sortBy;
+        }
+        
+        // Update when sort option changes
+        sortOptions.addEventListener('change', () => {
+          urlParams.set('sort', sortOptions.value);
+          window.location.search = urlParams.toString();
+        });
+      }
+      
+      // Reset filters
+      const resetFiltersBtn = document.querySelector('.reset-filters');
+      if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', () => {
+          // Keep only the query or category parameter
+          const newParams = new URLSearchParams();
+          
+          if (searchQuery) {
+            newParams.set('query', searchQuery);
+          } else if (category) {
+            newParams.set('category', category);
+          }
+          
+          window.location.search = newParams.toString();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

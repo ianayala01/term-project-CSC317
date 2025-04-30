@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Essentials - My Account</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3e26a1e3ce.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="/">Travel<span>Essentials</span></a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li class="auth-nav"><a href="/login">Login</a></li>
+          <li class="auth-nav"><a href="/register">Register</a></li>
+          <li class="profile-nav" style="display: none;"><a href="/profile" class="active">My Account</a></li>
+          <li><a href="/cart" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Profile Section -->
+  <section class="profile-container">
+    <div class="container">
+      <div class="alert-container"></div>
+      
+      <div class="profile-grid">
+        <div class="profile-sidebar">
+          <h2>My Account</h2>
+          <ul class="profile-menu">
+            <li><a href="#profile-info" class="active" data-tab="profile-info"><i class="fas fa-user"></i> Profile Information</a></li>
+            <li><a href="#order-history" data-tab="order-history"><i class="fas fa-shopping-bag"></i> Order History</a></li>
+            <li><a href="#address-book" data-tab="address-book"><i class="fas fa-address-book"></i> Address Book</a></li>
+            <li><a href="#password" data-tab="password"><i class="fas fa-lock"></i> Change Password</a></li>
+            <li><a href="/api/auth/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+          </ul>
+        </div>
+        
+        <div class="profile-content">
+          <!-- Profile Information Tab -->
+          <div class="profile-tab active" id="profile-info">
+            <div class="profile-heading">
+              <h2>Profile Information</h2>
+              <p>Manage your personal information</p>
+            </div>
+            
+            <form class="profile-form" data-validate>
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Your email" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Your phone number">
+              </div>
+              <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+          </div>
+          
+          <!-- Order History Tab -->
+          <div class="profile-tab" id="order-history">
+            <div class="profile-heading">
+              <h2>Order History</h2>
+              <p>View your past orders and their status</p>
+            </div>
+            
+            <div class="order-history">
+              <!-- Order history will be loaded dynamically -->
+              <div class="loading-spinner">Loading order history...</div>
+            </div>
+          </div>
+          
+          <!-- Address Book Tab -->
+          <div class="profile-tab" id="address-book">
+            <div class="profile-heading">
+              <h2>Address Book</h2>
+              <p>Manage your shipping and billing addresses</p>
+            </div>
+            
+            <div class="address-list">
+              <!-- Addresses will be loaded dynamically -->
+              <div class="loading-spinner">Loading addresses...</div>
+            </div>
+            
+            <button type="button" class="btn btn-secondary add-address-btn"><i class="fas fa-plus"></i> Add New Address</button>
+            
+            <!-- Add/Edit Address Form -->
+            <form class="address-form" style="display: none;" data-validate>
+              <h3>Add New Address</h3>
+              
+              <div class="form-group">
+                <label for="address-name">Address Name</label>
+                <input type="text" id="address-name" name="address_name" class="form-control" placeholder="Home, Work, etc." required>
+              </div>
+              
+              <div class="form-group">
+                <label for="recipient-name">Recipient Name</label>
+                <input type="text" id="recipient-name" name="recipient_name" class="form-control" placeholder="Recipient's full name" required>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="address-line1">Address Line 1</label>
+                  <input type="text" id="address-line1" name="address_line1" class="form-control" placeholder="Street address" required>
+                </div>
+                <div class="form-group">
+                  <label for="address-line2">Address Line 2</label>
+                  <input type="text" id="address-line2" name="address_line2" class="form-control" placeholder="Apartment, suite, unit, etc.">
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" id="city" name="city" class="form-control" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                  <label for="state">State/Province</label>
+                  <input type="text" id="state" name="state" class="form-control" placeholder="State/Province" required>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="postal-code">Postal Code</label>
+                  <input type="text" id="postal-code" name="postal_code" class="form-control" placeholder="Postal code" required>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <select id="country" name="country" class="form-control" required>
+                    <option value="">Select country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="GB">United Kingdom</option>
+                    <!-- More countries -->
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone number" required>
+              </div>
+              
+              <div class="form-group">
+                <div class="checkbox">
+                  <input type="checkbox" id="default-shipping" name="default_shipping">
+                  <label for="default-shipping">Set as default shipping address</label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="checkbox">
+                  <input type="checkbox" id="default-billing" name="default_billing">
+                  <label for="default-billing">Set as default billing address</label>
+                </div>
+              </div>
+              
+              <div class="form-buttons">
+                <button type="button" class="btn btn-secondary cancel-address-btn">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Address</button>
+              </div>
+            </form>
+          </div>
+          
+          <!-- Change Password Tab -->
+          <div class="profile-tab" id="password">
+            <div class="profile-heading">
+              <h2>Change Password</h2>
+              <p>Update your password to keep your account secure</p>
+            </div>
+            
+            <form class="password-form" data-validate>
+              <div class="form-group">
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password" name="current_password" class="form-control" placeholder="Enter current password" required>
+              </div>
+              <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" name="new_password" class="form-control" placeholder="Enter new password" required>
+                <small class="form-text text-muted">Password must be at least 8 characters long</small>
+              </div>
+              <div class="form-group">
+                <label for="confirm-new-password">Confirm New Password</label>
+                <input type="password" id="confirm-new-password" name="confirm_new_password" class="form-control" placeholder="Confirm new password" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <a href="/">Travel<span>Essentials</span></a>
+          </div>
+          <p>Your one-stop shop for all travel and lifestyle essentials. We help travelers stay equipped, comfortable, and inspired on their journeys.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/search">Products</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="/search?category=Bags">Bags</a></li>
+            <li><a href="/search?category=Electronics">Electronics</a></li>
+            <li><a href="/search?category=Accessories">Accessories</a></li>
+            <li><a href="/search?category=Comfort">Comfort</a></li>
+            <li><a href="/search?category=Organization">Organization</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
+            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Travel Essentials. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js"></script>
+  <script src="/js/validation.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Tab navigation
+      const tabLinks = document.querySelectorAll('.profile-menu a');
+      const tabContents = document.querySelectorAll('.profile-tab');
+      
+      tabLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          if (link.classList.contains('logout-btn')) return; // Skip for logout button
+          
+          e.preventDefault();
+          
+          // Remove active class from all links and tabs
+          tabLinks.forEach(l => l.classList.remove('active'));
+          tabContents.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked link and corresponding tab
+          link.classList.add('active');
+          const tabId = link.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+          
+          // Update URL hash
+          window.location.hash = tabId;
+        });
+      });
+      
+      // Set initial active tab based on URL hash
+      const initialTab = window.location.hash.substring(1) || 'profile-info';
+      const activeTabLink = document.querySelector(`.profile-menu a[data-tab="${initialTab}"]`);
+      const activeTabContent = document.getElementById(initialTab);
+      
+      if (activeTabLink && activeTabContent) {
+        tabLinks.forEach(l => l.classList.remove('active'));
+        tabContents.forEach(t => t.classList.remove('active'));
+        
+        activeTabLink.classList.add('active');
+        activeTabContent.classList.add('active');
+      }
+      
+      // Address form show/hide
+      const addAddressBtn = document.querySelector('.add-address-btn');
+      const cancelAddressBtn = document.querySelector('.cancel-address-btn');
+      const addressForm = document.querySelector('.address-form');
+      
+      if (addAddressBtn && cancelAddressBtn && addressForm) {
+        addAddressBtn.addEventListener('click', () => {
+          addressForm.style.display = 'block';
+          addAddressBtn.style.display = 'none';
+        });
+        
+        cancelAddressBtn.addEventListener('click', () => {
+          addressForm.style.display = 'none';
+          addAddressBtn.style.display = 'block';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

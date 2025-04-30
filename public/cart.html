@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Essentials - Login</title>
+  <title>Travel Essentials - Shopping Cart</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/3e26a1e3ce.js" crossorigin="anonymous"></script>
@@ -20,42 +20,76 @@
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/faq">FAQ</a></li>
-          <li class="auth-nav"><a href="/login" class="active">Login</a></li>
+          <li class="auth-nav"><a href="/login">Login</a></li>
           <li class="auth-nav"><a href="/register">Register</a></li>
           <li class="profile-nav" style="display: none;"><a href="/profile">My Account</a></li>
-          <li><a href="/cart" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
+          <li><a href="/cart" class="cart-icon active"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- Login Section -->
-  <section class="auth-container">
+  <!-- Cart Section -->
+  <section class="cart-container">
     <div class="container">
-      <div class="auth-content">
-        <div class="auth-card">
-          <h2>Login to Your Account</h2>
-          <div class="alert-container"></div>
-          <form class="login-form" data-validate>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="Your email" required>
+      <h1>Shopping Cart</h1>
+      <div class="alert-container"></div>
+      
+      <div class="cart-grid">
+        <div class="cart-items-container">
+          <div class="cart-items">
+            <!-- Cart items will be loaded dynamically -->
+            <div class="loading-spinner">Loading cart...</div>
+          </div>
+        </div>
+        
+        <div class="cart-sidebar">
+          <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span class="subtotal">$0.00</span>
             </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Your password" required>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span class="shipping">$0.00</span>
             </div>
-            <div class="form-group">
-              <div class="checkbox">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Remember me</label>
+            <div class="summary-row">
+              <span>Tax</span>
+              <span class="tax">$0.00</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span>
+              <span class="total-price">$0.00</span>
+            </div>
+            <button class="checkout-button">
+              <i class="fas fa-lock"></i> Proceed to Checkout
+            </button>
+            
+            <div class="payment-methods">
+              <p>We accept:</p>
+              <div class="payment-icons">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
               </div>
-              <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-          </form>
-          <div class="auth-links">
-            <p>Don't have an account? <a href="/register">Register</a></p>
+          </div>
+          
+          <div class="promo-code">
+            <h3>Promo Code</h3>
+            <form class="promo-form">
+              <div class="form-group">
+                <input type="text" name="promo" placeholder="Enter promo code">
+                <button type="submit" class="btn btn-secondary">Apply</button>
+              </div>
+            </form>
+          </div>
+          
+          <div class="need-help">
+            <h3>Need Help?</h3>
+            <p>Call our customer service at <strong>+1 234 567 890</strong> or email us at <strong>support@travelessentials.com</strong></p>
           </div>
         </div>
       </div>
@@ -119,6 +153,6 @@
 
   <!-- Scripts -->
   <script src="/js/main.js"></script>
-  <script src="/js/validation.js"></script>
+  <script src="/js/cart.js"></script>
 </body>
 </html>

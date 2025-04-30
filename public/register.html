@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Essentials - Login</title>
+  <title>Travel Essentials - Register</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/3e26a1e3ce.js" crossorigin="anonymous"></script>
@@ -20,8 +20,8 @@
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/faq">FAQ</a></li>
-          <li class="auth-nav"><a href="/login" class="active">Login</a></li>
-          <li class="auth-nav"><a href="/register">Register</a></li>
+          <li class="auth-nav"><a href="/login">Login</a></li>
+          <li class="auth-nav"><a href="/register" class="active">Register</a></li>
           <li class="profile-nav" style="display: none;"><a href="/profile">My Account</a></li>
           <li><a href="/cart" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
         </ul>
@@ -29,33 +29,41 @@
     </div>
   </header>
 
-  <!-- Login Section -->
+  <!-- Register Section -->
   <section class="auth-container">
     <div class="container">
       <div class="auth-content">
         <div class="auth-card">
-          <h2>Login to Your Account</h2>
+          <h2>Create an Account</h2>
           <div class="alert-container"></div>
-          <form class="login-form" data-validate>
+          <form class="register-form" data-validate>
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
+            </div>
             <div class="form-group">
               <label for="email">Email Address</label>
               <input type="email" id="email" name="email" class="form-control" placeholder="Your email" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Your password" required>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+              <small class="form-text text-muted">Password must be at least 8 characters long</small>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password" name="confirm_password" class="form-control" placeholder="Confirm your password" required>
             </div>
             <div class="form-group">
               <div class="checkbox">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Remember me</label>
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a></label>
               </div>
-              <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
           </form>
           <div class="auth-links">
-            <p>Don't have an account? <a href="/register">Register</a></p>
+            <p>Already have an account? <a href="/login">Login</a></p>
           </div>
         </div>
       </div>

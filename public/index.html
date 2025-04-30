@@ -1,78 +1,247 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Quick Stopify</title>
-        <link rel="stylesheet" href="style.css"/>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    </head>
-
-    <body>
-        <div id="navbar">
-            <img src="./images/logo.png" alt ="Logo for the Quick Stopify e-commerce site" style="width: 45px"/>
-            <button class="nav-btn">Home</button>
-            <button class="nav-btn">Shop</button>
-            <button class="nav-btn">About</button>
-
-            <form>
-                <input type="text" placeholder="Search..." name="q" class="nav-search">
-                <button type="submit" class="nav-btn">🔍</button>
-            </form>
-            <button class="nav-btn" id="account-btn">Account</button>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Essentials - Home</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3e26a1e3ce.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="/">Travel<span>Essentials</span></a>
         </div>
-
-        <div class="productsWrapper">
-            <div class="featuredSection">
-                <h1 class="sectionHeader">Featured Items</h1>
-                <div class="featuredItem">
-                    <img src="./images/headphones.jpg" alt="Colorful gamer headset"/>
-                </div>
-                <div class="featuredItem">
-                    <img src="./images/mouse.jpg" alt="Colorful gamer headset"/>
-                </div>
-            </div>
-            <div class="catSection">
-                <div class="category">
-                    <h2>Category 1</h2>
-                </div>
-                <div class="category">
-                    <h2>Category 2</h2>
-                </div>
-                <div class="category">
-                    <h2>Category 3</h2>
-                </div>
-                <div class="category">
-                    <h2>category 4</h2>
-                </div>
-            </div>
-            <div class="popWrapper">
-                <h1 class="sectionHeader">Popular Products</h1>
-                <div class="popularSection">
-
-                    <div class="popularProduct">
-                        <h2>Product 1</h2>
-                        <button class="addToCart-btn">Add to Cart!</button>
-                    </div>
-                    <div class="popularProduct">
-                        <h2>Product 2</h2>
-                        <button class="addToCart-btn">Add to Cart!</button>
-
-                    </div>
-                    <div class="popularProduct">
-                        <h2>Product 3</h2>
-                        <button class="addToCart-btn">Add to Cart!</button>
-
-                    </div>
-                    <div class="popularProduct">
-                        <h2>Product 4</h2>
-                        <button class="addToCart-btn">Add to Cart!</button>
-
-                    </div>
-                </div>
+        <div class="search-bar">
+          <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="Search products..." required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
         </div>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li class="auth-nav"><a href="/login">Login</a></li>
+          <li class="auth-nav"><a href="/register">Register</a></li>
+          <li class="profile-nav" style="display: none;"><a href="/profile">My Account</a></li>
+          <li><a href="/cart" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Travel Smarter, Not Harder</h1>
+      <p>Discover curated travel and lifestyle essentials that make your journey comfortable, convenient, and memorable.</p>
+      <a href="#featured-products" class="btn btn-primary">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section id="featured-products" class="featured-products">
+    <div class="container">
+      <div class="section-title">
+        <h2>Featured Products</h2>
+        <p>Handpicked essentials for your next adventure</p>
+      </div>
+      <div class="products-grid">
+        <!-- Products will be loaded dynamically via JavaScript -->
+        <div class="product-card skeleton">
+          <div class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-title"></h3>
+            <div class="product-category"></div>
+            <div class="product-price"></div>
+            <div class="product-button"></div>
+          </div>
         </div>
-        <script src="script.js"></script>
-    </body>
-    </html>
+        <div class="product-card skeleton">
+          <div class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-title"></h3>
+            <div class="product-category"></div>
+            <div class="product-price"></div>
+            <div class="product-button"></div>
+          </div>
+        </div>
+        <div class="product-card skeleton">
+          <div class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-title"></h3>
+            <div class="product-category"></div>
+            <div class="product-price"></div>
+            <div class="product-button"></div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top: 2rem;">
+        <a href="/search" class="btn btn-secondary">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Shop by Category</h2>
+        <p>Find exactly what you need for your travels</p>
+      </div>
+      <div class="categories-grid">
+        <a href="/search?category=Bags" class="category-card">
+          <img src="/images/icons/bag.svg" alt="Bags">
+          <h3>Bags</h3>
+          <p>Travel backpacks, daypacks, and more</p>
+        </a>
+        <a href="/search?category=Electronics" class="category-card">
+          <img src="/images/icons/electronics.svg" alt="Electronics">
+          <h3>Electronics</h3>
+          <p>Power banks, adapters, headphones</p>
+        </a>
+        <a href="/search?category=Accessories" class="category-card">
+          <img src="/images/icons/accessories.svg" alt="Accessories">
+          <h3>Accessories</h3>
+          <p>Water bottles, wallets, and essentials</p>
+        </a>
+        <a href="/search?category=Comfort" class="category-card">
+          <img src="/images/icons/comfort.svg" alt="Comfort">
+          <h3>Comfort</h3>
+          <p>Neck pillows, eye masks, and relaxation</p>
+        </a>
+        <a href="/search?category=Organization" class="category-card">
+          <img src="/images/icons/organization.svg" alt="Organization">
+          <h3>Organization</h3>
+          <p>Packing cubes, toiletry kits, and organizers</p>
+        </a>
+        <a href="/search?category=Books" class="category-card">
+          <img src="/images/icons/book.svg" alt="Books">
+          <h3>Books</h3>
+          <p>Guidebooks, journals, and travel reads</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-shipping-fast"></i>
+          </div>
+          <h3>Fast Shipping</h3>
+          <p>Free shipping on orders over $50</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Secure Payment</h3>
+          <p>Safe & secure checkout</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-undo"></i>
+          </div>
+          <h3>Easy Returns</h3>
+          <p>30-day money back guarantee</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Contact us anytime</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-content">
+        <h2>Join Our Newsletter</h2>
+        <p>Subscribe to get special offers, travel tips, and product updates.</p>
+        <form class="newsletter-form" data-validate>
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Your email address" required>
+            <button type="submit" class="btn">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <a href="/">Travel<span>Essentials</span></a>
+          </div>
+          <p>Your one-stop shop for all travel and lifestyle essentials. We help travelers stay equipped, comfortable, and inspired on their journeys.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/search">Products</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="/search?category=Bags">Bags</a></li>
+            <li><a href="/search?category=Electronics">Electronics</a></li>
+            <li><a href="/search?category=Accessories">Accessories</a></li>
+            <li><a href="/search?category=Comfort">Comfort</a></li>
+            <li><a href="/search?category=Organization">Organization</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
+            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Travel Essentials. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div class="alert-container"></div>
+
+  <!-- Scripts -->
+  <script src="/js/main.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/validation.js"></script>
+</body>
+</html>
