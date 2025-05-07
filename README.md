@@ -54,7 +54,7 @@ travel-essentials/
 ## Installation
 
 1. Clone the repository
-git clone [https://github.com/yourusername/travel-essentials.git](https://github.com/ianayala01/term-project-CSC317)
+git clone - https://github.com/ianayala01/term-project-CSC317
 cd travel-essentials
 
 2. Install dependencies
@@ -73,8 +73,8 @@ npm start
 The application comes pre-seeded with:
 
 - 18 travel-related products across 9 categories
-- A test user account:
-- Email: test@example.com
+- A test user account: You can register any account like 
+- Email: test@example.com 
 - Password: password123
 
 ## API Endpoints
