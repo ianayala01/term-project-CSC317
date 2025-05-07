@@ -34,28 +34,29 @@
     <div class="container">
       <div class="auth-content">
         <div class="auth-card">
-          <h2>Login to Your Account</h2>
+          <h2>Welcome Back</h2>
+          <p class="auth-subtitle" style="text-align: center; color: #6c757d; margin-bottom: 1.5rem;">Login to your account to continue</p>
           <div class="alert-container"></div>
           <form class="login-form" data-validate>
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="Your email" required>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Your password" required>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
             </div>
             <div class="form-group">
               <div class="checkbox">
                 <input type="checkbox" id="remember" name="remember">
                 <label for="remember">Remember me</label>
               </div>
-              <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
           </form>
           <div class="auth-links">
-            <p>Don't have an account? <a href="/register">Register</a></p>
+            <p><a href="/forgot-password">Forgot your password?</a></p>
+            <p>Don't have an account? <a href="/register">Sign up</a></p>
           </div>
         </div>
       </div>
@@ -101,9 +102,9 @@
         <div class="footer-column">
           <h3>Contact</h3>
           <ul class="contact-info">
-            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
-            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
-            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> 1600 Holloway Ave, San Francisco, 94132, CA</li>
+            <li><i class="fas fa-phone"></i> +1 (669)-649-1071</li>
+            <li><i class="fas fa-envelope"></i> ritesh@sfsu.edu</li>
           </ul>
         </div>
       </div>
@@ -120,5 +121,51 @@
   <!-- Scripts -->
   <script src="/js/main.js"></script>
   <script src="/js/validation.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.querySelector('.login-form');
+      
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(loginForm);
+        const data = {
+          email: formData.get('email'),
+          password: formData.get('password')
+        };
+        
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(result.message || 'Login failed');
+          }
+          
+          // Show success message
+          createAlert('Login successful! Redirecting...', 'success');
+          
+          // Get redirect URL from query params or default to home
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirectUrl = decodeURIComponent(urlParams.get('redirect') || '/');
+          
+          // Redirect after short delay
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 1500);
+          
+        } catch (error) {
+          createAlert(error.message, 'danger');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

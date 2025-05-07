@@ -245,9 +245,9 @@
         <div class="footer-column">
           <h3>Contact</h3>
           <ul class="contact-info">
-            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
-            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
-            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> 1600 Holloway Ave, San Francisco, 94132, CA</li>
+            <li><i class="fas fa-phone"></i> +1 (669)-649-1071</li>
+            <li><i class="fas fa-envelope"></i> ritesh@sfsu.edu</li>
           </ul>
         </div>
       </div>
@@ -263,63 +263,138 @@
 
   <!-- Scripts -->
   <script src="/js/main.js"></script>
-  <script src="/js/validation.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Tab navigation
-      const tabLinks = document.querySelectorAll('.profile-menu a');
-      const tabContents = document.querySelectorAll('.profile-tab');
-      
-      tabLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          if (link.classList.contains('logout-btn')) return; // Skip for logout button
-          
+<script src="/js/validation.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Tab navigation
+    const tabLinks = document.querySelectorAll('.profile-menu a');
+    const tabContents = document.querySelectorAll('.profile-tab');
+    
+    tabLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link.classList.contains('logout-btn')) {
           e.preventDefault();
           
-          // Remove active class from all links and tabs
-          tabLinks.forEach(l => l.classList.remove('active'));
-          tabContents.forEach(t => t.classList.remove('active'));
+          // Handle logout
+          fetch('/api/auth/logout')
+            .then(response => response.json())
+            .then(data => {
+              // Redirect to home page
+              window.location.href = '/';
+            })
+            .catch(error => {
+              console.error('Logout error:', error);
+              createAlert('Logout failed. Please try again.', 'danger');
+            });
           
-          // Add active class to clicked link and corresponding tab
-          link.classList.add('active');
-          const tabId = link.getAttribute('data-tab');
-          document.getElementById(tabId).classList.add('active');
-          
-          // Update URL hash
-          window.location.hash = tabId;
-        });
-      });
-      
-      // Set initial active tab based on URL hash
-      const initialTab = window.location.hash.substring(1) || 'profile-info';
-      const activeTabLink = document.querySelector(`.profile-menu a[data-tab="${initialTab}"]`);
-      const activeTabContent = document.getElementById(initialTab);
-      
-      if (activeTabLink && activeTabContent) {
+          return;
+        }
+        
+        e.preventDefault();
+        
+        // Remove active class from all links and tabs
         tabLinks.forEach(l => l.classList.remove('active'));
         tabContents.forEach(t => t.classList.remove('active'));
         
-        activeTabLink.classList.add('active');
-        activeTabContent.classList.add('active');
-      }
-      
-      // Address form show/hide
-      const addAddressBtn = document.querySelector('.add-address-btn');
-      const cancelAddressBtn = document.querySelector('.cancel-address-btn');
-      const addressForm = document.querySelector('.address-form');
-      
-      if (addAddressBtn && cancelAddressBtn && addressForm) {
-        addAddressBtn.addEventListener('click', () => {
-          addressForm.style.display = 'block';
-          addAddressBtn.style.display = 'none';
-        });
+        // Add active class to clicked link and corresponding tab
+        link.classList.add('active');
+        const tabId = link.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
         
-        cancelAddressBtn.addEventListener('click', () => {
-          addressForm.style.display = 'none';
-          addAddressBtn.style.display = 'block';
-        });
-      }
+        // Update URL hash
+        window.location.hash = tabId;
+      });
     });
-  </script>
+    
+    // Set initial active tab based on URL hash
+    const initialTab = window.location.hash.substring(1) || 'profile-info';
+    const activeTabLink = document.querySelector(`.profile-menu a[data-tab="${initialTab}"]`);
+    const activeTabContent = document.getElementById(initialTab);
+    
+    if (activeTabLink && activeTabContent) {
+      tabLinks.forEach(l => l.classList.remove('active'));
+      tabContents.forEach(t => t.classList.remove('active'));
+      
+      activeTabLink.classList.add('active');
+      activeTabContent.classList.add('active');
+    }
+    
+    // Address form show/hide
+    const addAddressBtn = document.querySelector('.add-address-btn');
+    const cancelAddressBtn = document.querySelector('.cancel-address-btn');
+    const addressForm = document.querySelector('.address-form');
+    
+    if (addAddressBtn && cancelAddressBtn && addressForm) {
+      addAddressBtn.addEventListener('click', () => {
+        addressForm.style.display = 'block';
+        addAddressBtn.style.display = 'none';
+      });
+      
+      cancelAddressBtn.addEventListener('click', () => {
+        addressForm.style.display = 'none';
+        addAddressBtn.style.display = 'block';
+      });
+    }
+    
+    // Helper function to create alerts
+    function createAlert(message, type = 'success') {
+      const alertContainer = document.querySelector('.alert-container');
+      if (!alertContainer) return;
+      
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type}`;
+      alertDiv.textContent = message;
+      
+      // Add close button
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'close-btn';
+      closeBtn.innerHTML = '&times;';
+      closeBtn.style.float = 'right';
+      closeBtn.style.background = 'none';
+      closeBtn.style.border = 'none';
+      closeBtn.style.fontSize = '1.25rem';
+      closeBtn.style.cursor = 'pointer';
+      
+      closeBtn.addEventListener('click', () => {
+        alertDiv.remove();
+      });
+      
+      alertDiv.appendChild(closeBtn);
+      
+      // Clear any existing alerts
+      alertContainer.innerHTML = '';
+      alertContainer.appendChild(alertDiv);
+      
+      // Auto dismiss after 5 seconds
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
+    
+    // Load user profile data
+    async function loadUserProfile() {
+      try {
+        const response = await fetch('/api/users/profile');
+        
+        if (!response.ok) {
+          throw new Error('Failed to load profile');
+        }
+        
+        const user = await response.json();
+        
+        // Populate form fields
+        document.getElementById('name').value = user.name || '';
+        document.getElementById('email').value = user.email || '';
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    }
+    
+    // Call loadUserProfile when page loads
+    loadUserProfile();
+  });
+</script>
 </body>
 </html>

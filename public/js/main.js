@@ -2,657 +2,641 @@
 
 // DOM Elements
 const DOM = {
-    header: document.querySelector('.header'),
-    navLinks: document.querySelector('.nav-links'),
-    cartCount: document.querySelector('.cart-count'),
-    productGrid: document.querySelector('.products-grid'),
-    featuredProducts: document.querySelector('.featured-products'),
-    searchForm: document.querySelector('.search-form'),
-    searchInput: document.querySelector('.search-input'),
-    searchResults: document.querySelector('.search-results'),
-    categoryFilters: document.querySelector('.category-filters'),
-    productDetailContainer: document.querySelector('.product-detail'),
-    cartContainer: document.querySelector('.cart-container'),
-    cartItems: document.querySelector('.cart-items'),
-    cartSummary: document.querySelector('.cart-summary'),
-    loginForm: document.querySelector('.login-form'),
-    registerForm: document.querySelector('.register-form'),
-    profileContainer: document.querySelector('.profile-container'),
-    faqItems: document.querySelectorAll('.faq-item'),
-    alertContainer: document.querySelector('.alert-container')
-  };
+  header: document.querySelector('.header'),
+  navLinks: document.querySelector('.nav-links'),
+  cartCount: document.querySelector('.cart-count'),
+  productGrid: document.querySelector('.products-grid'),
+  featuredProducts: document.querySelector('.featured-products'),
+  searchForm: document.querySelector('.search-form') || document.querySelector('form[action="/search"]'),
+  searchInput: document.querySelector('.search-input') || document.querySelector('input[name="query"]'),
+  searchResults: document.querySelector('.search-results'),
+  categoryFilters: document.querySelector('.category-filters'),
+  productDetailContainer: document.querySelector('.product-detail'),
+  cartContainer: document.querySelector('.cart-container'),
+  cartItems: document.querySelector('.cart-items'),
+  cartSummary: document.querySelector('.cart-summary'),
+  loginForm: document.querySelector('.login-form'),
+  registerForm: document.querySelector('.register-form'),
+  profileContainer: document.querySelector('.profile-container'),
+  faqItems: document.querySelectorAll('.faq-item'),
+  alertContainer: document.querySelector('.alert-container')
+};
+
+// API endpoints
+const API = {
+  auth: '/api/auth',
+  products: '/api/products',
+  users: '/api/users',
+  cart: '/api/cart'
+};
+
+// Helper functions
+function formatPrice(price) {
+  return `$${parseFloat(price).toFixed(2)}`;
+}
+
+function createAlert(message, type = 'success') {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert alert-${type}`;
+  alertDiv.textContent = message;
   
-  // API endpoints
-  const API = {
-    auth: '/api/auth',
-    products: '/api/products',
-    users: '/api/users',
-    cart: '/api/cart'
-  };
+  // Add close button
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'close-btn';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.style.float = 'right';
+  closeBtn.style.background = 'none';
+  closeBtn.style.border = 'none';
+  closeBtn.style.fontSize = '1.25rem';
+  closeBtn.style.cursor = 'pointer';
+  closeBtn.style.marginLeft = '10px';
   
-  // Helper functions
-  function formatPrice(price) {
-    return `$${parseFloat(price).toFixed(2)}`;
+  closeBtn.addEventListener('click', () => {
+    alertDiv.remove();
+  });
+  
+  alertDiv.appendChild(closeBtn);
+  
+  // Create alert container if it doesn't exist
+  let alertContainer = document.querySelector('.alert-container');
+  if (!alertContainer) {
+    alertContainer = document.createElement('div');
+    alertContainer.className = 'alert-container';
+    const main = document.querySelector('main') || document.body;
+    main.insertBefore(alertContainer, main.firstChild);
   }
   
-  function createAlert(message, type = 'success') {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type}`;
-    alertDiv.textContent = message;
-    
-    if (DOM.alertContainer) {
-      DOM.alertContainer.innerHTML = '';
-      DOM.alertContainer.appendChild(alertDiv);
-      
-      // Auto dismiss after 3 seconds
-      setTimeout(() => {
-        alertDiv.remove();
-      }, 3000);
+  alertContainer.innerHTML = '';
+  alertContainer.appendChild(alertDiv);
+  
+  // Auto dismiss after 5 seconds
+  setTimeout(() => {
+    if (alertDiv.parentNode) {
+      alertDiv.remove();
     }
-  }
-  
-  async function fetchData(url, options = {}) {
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers
-        }
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong');
+  }, 5000);
+}
+
+async function fetchData(url, options = {}) {
+  try {
+    console.log('Fetching:', url);
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
       }
-      
-      return data;
-    } catch (error) {
-      console.error('Fetch error:', error);
-      createAlert(error.message, 'danger');
-      throw error;
-    }
-  }
-  
-  // Check authentication status
-  async function checkAuth() {
-    try {
-      const data = await fetchData(`${API.auth}/status`);
-      
-      if (data.isAuthenticated) {
-        // Update UI for logged in user
-        document.body.classList.add('is-authenticated');
-        
-        // Update navigation
-        const authLinks = document.querySelectorAll('.auth-nav');
-        const profileLinks = document.querySelectorAll('.profile-nav');
-        
-        authLinks.forEach(link => link.style.display = 'none');
-        profileLinks.forEach(link => {
-          link.style.display = 'block';
-          if (link.querySelector('.user-name')) {
-            link.querySelector('.user-name').textContent = data.user.name;
-          }
-        });
-        
-        // Update cart count
-        updateCartCount();
-      } else {
-        document.body.classList.remove('is-authenticated');
-      }
-    } catch (error) {
-      console.error('Auth check error:', error);
-    }
-  }
-  
-  // Update cart item count
-  async function updateCartCount() {
-    try {
-      const cartData = await fetchData(`${API.cart}`);
-      
-      if (DOM.cartCount) {
-        const totalItems = cartData.items.reduce((sum, item) => sum + item.quantity, 0);
-        DOM.cartCount.textContent = totalItems;
-        
-        if (totalItems > 0) {
-          DOM.cartCount.style.display = 'flex';
-        } else {
-          DOM.cartCount.style.display = 'none';
-        }
-      }
-    } catch (error) {
-      console.error('Cart count error:', error);
-    }
-  }
-  
-  // Load featured products on homepage
-  async function loadFeaturedProducts() {
-    if (!DOM.featuredProducts) return;
-    
-    try {
-      const products = await fetchData(`${API.products}/featured`);
-      
-      if (DOM.productGrid) {
-        DOM.productGrid.innerHTML = '';
-        
-        products.forEach(product => {
-          const productCard = createProductCard(product);
-          DOM.productGrid.appendChild(productCard);
-        });
-      }
-    } catch (error) {
-      console.error('Featured products error:', error);
-    }
-  }
-  
-  // Create product card element
-  function createProductCard(product) {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    
-    card.innerHTML = `
-      <div class="product-img">
-        <img src="${product.image_url}" alt="${product.name}">
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">${product.name}</h3>
-        <div class="product-category">${product.category}</div>
-        <div class="product-price">${formatPrice(product.price)}</div>
-        <a href="/product/${product.id}" class="btn btn-primary">View Details</a>
-      </div>
-    `;
-    
-    return card;
-  }
-  
-  // Load product details
-  async function loadProductDetails() {
-    if (!DOM.productDetailContainer) return;
-    
-    const productId = window.location.pathname.split('/').pop();
-    
-    try {
-      const product = await fetchData(`${API.products}/${productId}`);
-      
-      // Update product details in DOM
-      const productContent = DOM.productDetailContainer.querySelector('.product-content');
-      
-      if (productContent) {
-        // Update product title
-        const title = productContent.querySelector('h1');
-        if (title) title.textContent = product.name;
-        
-        // Update product category
-        const category = productContent.querySelector('.category');
-        if (category) category.textContent = product.category;
-        
-        // Update product price
-        const price = productContent.querySelector('.price');
-        if (price) price.textContent = formatPrice(product.price);
-        
-        // Update product description
-        const description = productContent.querySelector('.product-description');
-        if (description) description.textContent = product.description;
-        
-        // Update add to cart button
-        const addToCartBtn = productContent.querySelector('.add-to-cart-btn');
-        if (addToCartBtn) {
-          addToCartBtn.dataset.productId = product.id;
-        }
-      }
-      
-      // Update product image
-      const productGallery = DOM.productDetailContainer.querySelector('.product-gallery');
-      if (productGallery) {
-        productGallery.innerHTML = `<img src="${product.image_url}" alt="${product.name}">`;
-      }
-    } catch (error) {
-      console.error('Product details error:', error);
-    }
-  }
-  
-  // Handle product search
-  async function handleSearch(event) {
-    if (!DOM.searchForm) return;
-    
-    event.preventDefault();
-    
-    const searchQuery = DOM.searchInput.value.trim();
-    
-    if (!searchQuery) return;
-    
-    try {
-      const products = await fetchData(`${API.products}/search?query=${encodeURIComponent(searchQuery)}`);
-      
-      if (DOM.searchResults) {
-        DOM.searchResults.innerHTML = '';
-        
-        if (products.length === 0) {
-          DOM.searchResults.innerHTML = '<p>No products found matching your search.</p>';
-          return;
-        }
-        
-        const resultsGrid = document.createElement('div');
-        resultsGrid.className = 'products-grid';
-        
-        products.forEach(product => {
-          const productCard = createProductCard(product);
-          resultsGrid.appendChild(productCard);
-        });
-        
-        DOM.searchResults.appendChild(resultsGrid);
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-    }
-  }
-  
-  // Load cart contents
-  async function loadCart() {
-    if (!DOM.cartContainer) return;
-    
-    try {
-      const cartData = await fetchData(`${API.cart}`);
-      
-      if (DOM.cartItems) {
-        DOM.cartItems.innerHTML = '';
-        
-        if (cartData.items.length === 0) {
-          DOM.cartItems.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><a href="/" class="btn">Continue Shopping</a></div>';
-          DOM.cartSummary.style.display = 'none';
-          return;
-        }
-        
-        cartData.items.forEach(item => {
-          const cartItem = document.createElement('div');
-          cartItem.className = 'cart-item';
-          
-          cartItem.innerHTML = `
-            <div class="cart-item-img">
-              <img src="${item.image_url}" alt="${item.name}">
-            </div>
-            <div class="cart-item-details">
-              <h3>${item.name}</h3>
-            </div>
-            <div class="cart-item-price">${formatPrice(item.price)}</div>
-            <div class="cart-item-quantity">
-              <button class="decrease-quantity" data-item-id="${item.id}">-</button>
-              <input type="number" value="${item.quantity}" min="1" max="${item.stock_quantity}" data-item-id="${item.id}">
-              <button class="increase-quantity" data-item-id="${item.id}">+</button>
-            </div>
-            <div class="cart-item-total">${formatPrice(item.price * item.quantity)}</div>
-            <div class="cart-item-remove">
-              <button class="btn-danger remove-item" data-item-id="${item.id}">Remove</button>
-            </div>
-          `;
-          
-          DOM.cartItems.appendChild(cartItem);
-        });
-        
-        // Setup event listeners for cart items
-        setupCartItemEvents();
-        
-        // Update cart summary
-        if (DOM.cartSummary) {
-          const subtotalEl = DOM.cartSummary.querySelector('.subtotal');
-          const totalEl = DOM.cartSummary.querySelector('.total-price');
-          
-          if (subtotalEl) subtotalEl.textContent = formatPrice(cartData.total);
-          if (totalEl) totalEl.textContent = formatPrice(cartData.total);
-          
-          DOM.cartSummary.style.display = 'block';
-        }
-      }
-    } catch (error) {
-      console.error('Cart error:', error);
-    }
-  }
-  
-  // Setup event listeners for cart item buttons
-  function setupCartItemEvents() {
-    // Increase quantity
-    const increaseButtons = document.querySelectorAll('.increase-quantity');
-    increaseButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const itemId = button.dataset.itemId;
-        const input = document.querySelector(`input[data-item-id="${itemId}"]`);
-        
-        if (input) {
-          const currentValue = parseInt(input.value);
-          const maxValue = parseInt(input.max);
-          
-          if (currentValue < maxValue) {
-            input.value = currentValue + 1;
-            updateCartItemQuantity(itemId, currentValue + 1);
-          }
-        }
-      });
     });
     
-    // Decrease quantity
-    const decreaseButtons = document.querySelectorAll('.decrease-quantity');
-    decreaseButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const itemId = button.dataset.itemId;
-        const input = document.querySelector(`input[data-item-id="${itemId}"]`);
-        
-        if (input) {
-          const currentValue = parseInt(input.value);
-          
-          if (currentValue > 1) {
-            input.value = currentValue - 1;
-            updateCartItemQuantity(itemId, currentValue - 1);
-          }
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    createAlert(error.message, 'danger');
+    throw error;
+  }
+}
+
+// Check authentication status
+async function checkAuth() {
+  try {
+    const data = await fetchData(`${API.auth}/status`);
+    
+    if (data.isAuthenticated) {
+      // Update UI for logged in user
+      document.body.classList.add('is-authenticated');
+      
+      // Update navigation
+      const authLinks = document.querySelectorAll('.auth-nav');
+      const profileLinks = document.querySelectorAll('.profile-nav');
+      
+      authLinks.forEach(link => link.style.display = 'none');
+      profileLinks.forEach(link => {
+        link.style.display = 'block';
+        if (link.querySelector('.user-name')) {
+          link.querySelector('.user-name').textContent = data.user.name;
         }
       });
-    });
-    
-    // Quantity input change
-    const quantityInputs = document.querySelectorAll('.cart-item-quantity input');
-    quantityInputs.forEach(input => {
-      input.addEventListener('change', () => {
-        const itemId = input.dataset.itemId;
-        const value = parseInt(input.value);
-        
-        if (value < 1) {
-          input.value = 1;
-          updateCartItemQuantity(itemId, 1);
-        } else if (value > parseInt(input.max)) {
-          input.value = input.max;
-          updateCartItemQuantity(itemId, parseInt(input.max));
-        } else {
-          updateCartItemQuantity(itemId, value);
-        }
-      });
-    });
-    
-    // Remove item
-    const removeButtons = document.querySelectorAll('.remove-item');
-    removeButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const itemId = button.dataset.itemId;
-        removeCartItem(itemId);
-      });
-    });
-  }
-  
-  // Update cart item quantity
-  async function updateCartItemQuantity(itemId, quantity) {
-    try {
-      await fetchData(`${API.cart}/${itemId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ quantity })
-      });
-      
-      // Reload cart to reflect changes
-      loadCart();
-      
-      // Update cart count in header
-      updateCartCount();
-    } catch (error) {
-      console.error('Update quantity error:', error);
-    }
-  }
-  
-  // Remove item from cart
-  async function removeCartItem(itemId) {
-    try {
-      await fetchData(`${API.cart}/${itemId}`, {
-        method: 'DELETE'
-      });
-      
-      // Reload cart to reflect changes
-      loadCart();
-      
-      // Update cart count in header
-      updateCartCount();
-    } catch (error) {
-      console.error('Remove item error:', error);
-    }
-  }
-  
-  // Process checkout
-  async function processCheckout() {
-    try {
-      const result = await fetchData(`${API.cart}/checkout`, {
-        method: 'POST'
-      });
-      
-      // Show success message
-      createAlert('Order placed successfully!');
-      
-      // Redirect to order confirmation page
-      window.location.href = `/profile?order=${result.orderId}`;
-    } catch (error) {
-      console.error('Checkout error:', error);
-    }
-  }
-  
-  // Handle login form submission
-  async function handleLogin(event) {
-    if (!DOM.loginForm) return;
-    
-    event.preventDefault();
-    
-    const email = DOM.loginForm.querySelector('input[name="email"]').value;
-    const password = DOM.loginForm.querySelector('input[name="password"]').value;
-    
-    if (!email || !password) {
-      createAlert('Please enter email and password', 'danger');
-      return;
-    }
-    
-    try {
-      const result = await fetchData(`${API.auth}/login`, {
-        method: 'POST',
-        body: JSON.stringify({ email, password })
-      });
-      
-      createAlert('Login successful!');
-      
-      // Redirect to previous page or home
-      const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/';
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error('Login error:', error);
-    }
-  }
-  
-  // Handle register form submission
-  async function handleRegister(event) {
-    if (!DOM.registerForm) return;
-    
-    event.preventDefault();
-    
-    const name = DOM.registerForm.querySelector('input[name="name"]').value;
-    const email = DOM.registerForm.querySelector('input[name="email"]').value;
-    const password = DOM.registerForm.querySelector('input[name="password"]').value;
-    const confirmPassword = DOM.registerForm.querySelector('input[name="confirm_password"]').value;
-    
-    if (!name || !email || !password) {
-      createAlert('Please fill all required fields', 'danger');
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      createAlert('Passwords do not match', 'danger');
-      return;
-    }
-    
-    try {
-      const result = await fetchData(`${API.auth}/register`, {
-        method: 'POST',
-        body: JSON.stringify({ name, email, password })
-      });
-      
-      createAlert('Registration successful! Please log in.');
-      
-      // Redirect to login page
-      window.location.href = '/login';
-    } catch (error) {
-      console.error('Register error:', error);
-    }
-  }
-  
-  // Load user profile
-  async function loadProfile() {
-    if (!DOM.profileContainer) return;
-    
-    try {
-      const userData = await fetchData(`${API.users}/profile`);
-      const orderHistory = await fetchData(`${API.users}/orders`);
-      
-      // Update profile info
-      const profileInfo = DOM.profileContainer.querySelector('.profile-info');
-      if (profileInfo) {
-        const nameEl = profileInfo.querySelector('.user-name');
-        const emailEl = profileInfo.querySelector('.user-email');
-        
-        if (nameEl) nameEl.textContent = userData.name;
-        if (emailEl) emailEl.textContent = userData.email;
-      }
-      
-      // Update order history
-      const orderHistoryContainer = DOM.profileContainer.querySelector('.order-history');
-      if (orderHistoryContainer) {
-        orderHistoryContainer.innerHTML = '';
-        
-        if (orderHistory.length === 0) {
-          orderHistoryContainer.innerHTML = '<p>You have no previous orders.</p>';
-          return;
-        }
-        
-        orderHistory.forEach(order => {
-          const orderElement = document.createElement('div');
-          orderElement.className = 'order-history-item';
-          
-          // Format date
-          const orderDate = new Date(order.created_at);
-          const formattedDate = orderDate.toLocaleDateString();
-          
-          orderElement.innerHTML = `
-            <div class="order-header">
-              <div>
-                <div>Order #${order.id}</div>
-                <div>${formattedDate}</div>
-              </div>
-              <div class="order-status">${order.status}</div>
-              <div class="order-total">${formatPrice(order.total_amount)}</div>
-            </div>
-            <div class="order-products"></div>
-          `;
-          
-          const orderProducts = orderElement.querySelector('.order-products');
-          
-          order.items.forEach(item => {
-            const productElement = document.createElement('div');
-            productElement.className = 'order-product';
-            
-            productElement.innerHTML = `
-              <div class="order-product-img">
-                <img src="${item.image_url}" alt="${item.name}">
-              </div>
-              <div class="order-product-details">
-                <h4>${item.name}</h4>
-                <div>Quantity: ${item.quantity}</div>
-                <div class="price">${formatPrice(item.price_at_time)}</div>
-              </div>
-            `;
-            
-            orderProducts.appendChild(productElement);
-          });
-          
-          orderHistoryContainer.appendChild(orderElement);
-        });
-      }
-    } catch (error) {
-      console.error('Profile error:', error);
-    }
-  }
-  
-  // Handle FAQ accordion
-  function setupFAQ() {
-    if (!DOM.faqItems) return;
-    
-    DOM.faqItems.forEach(item => {
-      const question = item.querySelector('.faq-question');
-      const answer = item.querySelector('.faq-answer');
-      
-      question.addEventListener('click', () => {
-        // Toggle active class
-        question.classList.toggle('active');
-        answer.classList.toggle('active');
-      });
-    });
-  }
-  
-  // Add product to cart
-  async function addToCart(productId, quantity = 1) {
-    try {
-      const result = await fetchData(`${API.cart}`, {
-        method: 'POST',
-        body: JSON.stringify({ productId, quantity })
-      });
-      
-      createAlert('Product added to cart!');
       
       // Update cart count
       updateCartCount();
-    } catch (error) {
-      console.error('Add to cart error:', error);
+    } else {
+      document.body.classList.remove('is-authenticated');
+    }
+  } catch (error) {
+    console.error('Auth check error:', error);
+  }
+}
+
+// Update cart item count
+async function updateCartCount() {
+  try {
+    const cartData = await fetchData(`${API.cart}`);
+    
+    if (DOM.cartCount) {
+      const totalItems = cartData.items.reduce((sum, item) => sum + item.quantity, 0);
+      DOM.cartCount.textContent = totalItems;
+      
+      if (totalItems > 0) {
+        DOM.cartCount.style.display = 'flex';
+      } else {
+        DOM.cartCount.style.display = 'none';
+      }
+    }
+  } catch (error) {
+    console.error('Cart count error:', error);
+  }
+}
+
+// Load featured products on homepage with proper shuffling
+async function loadFeaturedProducts() {
+  if (!DOM.featuredProducts) return;
+  
+  try {
+    // Fetch all products
+    const response = await fetchData(`${API.products}`);
+    let products;
+    
+    // Handle different response formats
+    if (response.products) {
+      products = response.products;
+    } else if (Array.isArray(response)) {
+      products = response;
+    } else {
+      console.error('Unexpected response format:', response);
+      throw new Error('Invalid product data');
+    }
+    
+    console.log('Featured products total count:', products.length);
+    
+    if (products.length > 0) {
+      // Shuffle the products array
+      const shuffledProducts = [...products].sort(() => Math.random() - 0.5);
+      
+      // Get the first 8 products (or less if fewer than 8 products exist)
+      const featuredProducts = shuffledProducts.slice(0, 8);
+      
+      // Get the product grids for the first and second rows
+      const productGrids = DOM.featuredProducts.querySelectorAll('.products-grid');
+      
+      if (productGrids.length === 2) {
+        // Clear existing content
+        productGrids[0].innerHTML = '';
+        productGrids[1].innerHTML = '';
+        
+        // Display first 4 products in the first row
+        for (let i = 0; i < Math.min(4, featuredProducts.length); i++) {
+          const productCard = createProductCard(featuredProducts[i]);
+          productGrids[0].appendChild(productCard);
+        }
+        
+        // Display next 4 products in the second row
+        for (let i = 4; i < Math.min(8, featuredProducts.length); i++) {
+          const productCard = createProductCard(featuredProducts[i]);
+          productGrids[1].appendChild(productCard);
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Featured products error:', error);
+    
+    // Show error message
+    const productGrids = DOM.featuredProducts.querySelectorAll('.products-grid');
+    if (productGrids.length > 0) {
+      productGrids[0].innerHTML = `
+        <div class="error-message" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+          <p>Failed to load products. Please try again later.</p>
+          <button class="btn btn-primary retry-btn">Retry</button>
+        </div>
+      `;
+      
+      // Add retry button functionality
+      const retryBtn = productGrids[0].querySelector('.retry-btn');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', loadFeaturedProducts);
+      }
     }
   }
+}
+
+// Create product card element
+function createProductCard(product) {
+  const card = document.createElement('div');
+  card.className = 'product-card';
   
-  // Event listeners
-  document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication status
-    checkAuth();
+  card.innerHTML = `
+    <div class="product-img">
+      <img src="${product.image_url}" alt="${product.name}" onerror="this.src='/images/placeholder.png'">
+    </div>
+    <div class="product-info">
+      <h3 class="product-title">${product.name}</h3>
+      <div class="product-category">${product.category}</div>
+      <div class="product-price">${formatPrice(product.price)}</div>
+      <div class="product-button">
+        <a href="/product/${product.id}" class="btn btn-secondary">View Details</a>
+      </div>
+    </div>
+  `;
+  
+  return card;
+}
+
+// Load product details
+async function loadProductDetails() {
+  const productId = window.location.pathname.split('/').pop();
+  
+  try {
+    const product = await fetchData(`${API.products}/${productId}`);
     
-    // Load featured products on homepage
-    loadFeaturedProducts();
+    // Update product details in DOM
+    const productContent = DOM.productDetailContainer.querySelector('.product-content');
     
-    // Load product details on product page
-    loadProductDetails();
+    if (productContent) {
+      // Update product title
+      const title = productContent.querySelector('h1');
+      if (title) title.textContent = product.name;
+      
+      // Update product category
+      const category = productContent.querySelector('.category');
+      if (category) category.textContent = product.category;
+      
+      // Update product price
+      const price = productContent.querySelector('.price');
+      if (price) price.textContent = formatPrice(product.price);
+      
+      // Update product description
+      const description = productContent.querySelector('.product-description');
+      if (description) description.textContent = product.description;
+      
+      // Update add to cart button
+      const addToCartBtn = productContent.querySelector('.add-to-cart-btn');
+      if (addToCartBtn) {
+        addToCartBtn.dataset.productId = product.id;
+      }
+    }
     
-    // Load cart contents on cart page
-    loadCart();
+    // Update product image
+    const productGallery = DOM.productDetailContainer.querySelector('.product-gallery');
+    if (productGallery) {
+      productGallery.innerHTML = `<img src="${product.image_url}" alt="${product.name}" onerror="this.src='/images/placeholder.png'">`;
+    }
     
-    // Load user profile on profile page
-    loadProfile();
+    // Update breadcrumbs
+    const breadcrumbCategory = document.querySelector('.breadcrumb a:nth-child(2)');
+    if (breadcrumbCategory) {
+      breadcrumbCategory.href = `/search?category=${encodeURIComponent(product.category)}`;
+      breadcrumbCategory.textContent = product.category;
+    }
     
-    // Setup FAQ accordion
-    setupFAQ();
+    const breadcrumbProduct = document.querySelector('.breadcrumb .product-name');
+    if (breadcrumbProduct) {
+      breadcrumbProduct.textContent = product.name;
+    }
     
-    // Event: Add to cart button click
-    document.addEventListener('click', event => {
-      if (event.target.classList.contains('add-to-cart-btn')) {
-        const productId = event.target.dataset.productId;
-        const quantityInput = document.querySelector('.quantity-control input');
-        const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-        
-        addToCart(productId, quantity);
+    // Update page title
+    document.title = `${product.name} - Travel Essentials`;
+    
+    // Load related products
+    await loadRelatedProducts(product.category, product.id);
+    
+  } catch (error) {
+    console.error('Product details error:', error);
+    createAlert('Failed to load product details. Please try again later.', 'danger');
+  }
+}
+
+// Load related products
+async function loadRelatedProducts(category, currentProductId) {
+  const relatedProductsGrid = document.querySelector('.related-products .products-grid');
+  if (!relatedProductsGrid) return;
+  
+  try {
+    // Show loading
+    relatedProductsGrid.innerHTML = '<div class="loading-spinner">Loading related products...</div>';
+    
+    // Fetch products in the same category
+    const products = await fetchData(`${API.products}/search?category=${encodeURIComponent(category)}`);
+    
+    // Filter out current product and limit to 4
+    const relatedProducts = products
+      .filter(product => product.id !== parseInt(currentProductId))
+      .slice(0, 4);
+    
+    // Clear loading message
+    relatedProductsGrid.innerHTML = '';
+    
+    if (relatedProducts.length > 0) {
+      relatedProducts.forEach(product => {
+        const productCard = createProductCard(product);
+        relatedProductsGrid.appendChild(productCard);
+      });
+    } else {
+      relatedProductsGrid.innerHTML = `
+        <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+          <p>No related products found.</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Related products error:', error);
+    relatedProductsGrid.innerHTML = `
+      <div class="error-message" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+        <p>Failed to load related products.</p>
+      </div>
+    `;
+  }
+}
+
+// Handle product search
+async function handleSearch(event) {
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+  
+  const form = event?.target || DOM.searchForm;
+  if (!form) return;
+  
+  const formData = new FormData(form);
+  const searchQuery = formData.get('query')?.trim();
+  
+  if (searchQuery) {
+    // Redirect to search page with query
+    window.location.href = `/search?query=${encodeURIComponent(searchQuery)}`;
+  }
+}
+
+// Load search results
+async function loadSearchResults() {
+  if (!DOM.searchResults) return;
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('query');
+  const category = urlParams.get('category');
+  const minPrice = urlParams.get('min_price');
+  const maxPrice = urlParams.get('max_price');
+  const sortBy = urlParams.get('sort');
+  
+  // Add debug logs
+  console.log("Search parameters:", { query, category, minPrice, maxPrice, sortBy });
+  
+  // Update search term display
+  const searchTerm = document.getElementById('search-term');
+  if (searchTerm) {
+    searchTerm.textContent = query || category || 'All Products';
+  }
+  
+  try {
+    // Build query parameters
+    let queryParams = new URLSearchParams();
+    
+    if (query) queryParams.append('query', query);
+    if (category) queryParams.append('category', category);
+    if (minPrice) queryParams.append('min_price', minPrice);
+    if (maxPrice) queryParams.append('max_price', maxPrice);
+    if (sortBy) queryParams.append('sort', sortBy);
+    
+    // Add debug log
+    console.log("API Query:", queryParams.toString());
+    
+    // Fetch search results
+    let products;
+    let apiUrl;
+    if (query) {
+      apiUrl = `${API.products}/search?${queryParams.toString()}`;
+      products = await fetchData(apiUrl);
+    } else {
+      apiUrl = `${API.products}?${queryParams.toString()}`;
+      const response = await fetchData(apiUrl);
+      products = response.products || response;
+    }
+    
+    // Add debug logs
+    console.log("API URL used:", apiUrl);
+    console.log("Products received:", products);
+    console.log("Number of products:", products.length);
+    
+    // Update results count
+    const resultsCount = document.getElementById('results-count');
+    if (resultsCount) {
+      resultsCount.textContent = products.length;
+    }
+    
+    // Get products grid
+    const productsGrid = document.querySelector('.products-grid');
+    
+    if (productsGrid) {
+      // Clear loading state
+      productsGrid.innerHTML = '';
+      
+      if (products.length === 0) {
+        productsGrid.innerHTML = `
+          <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+            <h3>No products found</h3>
+            <p>Try adjusting your search criteria or browse our categories.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Add products to grid
+      products.forEach(product => {
+        const productCard = createProductCard(product);
+        productsGrid.appendChild(productCard);
+      });
+    }
+    
+    // Load categories for filters
+    loadCategories();
+    
+    // Set form values from URL
+    const minPriceInput = document.getElementById('min-price');
+    const maxPriceInput = document.getElementById('max-price');
+    const sortOptions = document.getElementById('sort-options');
+    const searchInput = document.querySelector('.search-input');
+    
+    if (minPriceInput && minPrice) minPriceInput.value = minPrice;
+    if (maxPriceInput && maxPrice) maxPriceInput.value = maxPrice;
+    if (sortOptions && sortBy) sortOptions.value = sortBy;
+    if (searchInput && query) searchInput.value = query;
+    
+  } catch (error) {
+    console.error('Search results error:', error);
+    createAlert('Failed to load search results. Please try again later.', 'danger');
+  }
+}
+
+// Load categories for filter sidebar
+async function loadCategories() {
+  if (!DOM.categoryFilters) return;
+  
+  try {
+    const categories = await fetchData(`${API.products}/categories`);
+    console.log("Categories loaded:", categories);
+    
+    // Clear loading state
+    DOM.categoryFilters.innerHTML = '';
+    
+    // Get current category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentCategory = urlParams.get('category');
+    
+    // Add "All Categories" option
+    const allCategoriesDiv = document.createElement('div');
+    allCategoriesDiv.className = 'filter-option';
+    
+    const allCategoriesLabel = document.createElement('label');
+    allCategoriesLabel.className = 'checkbox-label';
+    
+    const allCategoriesInput = document.createElement('input');
+    allCategoriesInput.type = 'radio';
+    allCategoriesInput.name = 'category';
+    allCategoriesInput.value = '';
+    allCategoriesInput.checked = !currentCategory;
+    
+    allCategoriesLabel.appendChild(allCategoriesInput);
+    allCategoriesLabel.appendChild(document.createTextNode('All Categories'));
+    allCategoriesDiv.appendChild(allCategoriesLabel);
+    DOM.categoryFilters.appendChild(allCategoriesDiv);
+    
+    // Add event listener for All Categories option
+    allCategoriesInput.addEventListener('change', () => {
+      if (allCategoriesInput.checked) {
+        console.log("All Categories selected");
+        // Create a new URL without the category parameter
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete('category');
+        console.log("Redirecting to:", newUrl.toString());
+        window.location.href = newUrl.toString();
       }
     });
     
-    // Event: Search form submit
-    if (DOM.searchForm) {
-      DOM.searchForm.addEventListener('submit', handleSearch);
-    }
-    
-    // Event: Login form submit
-    if (DOM.loginForm) {
-      DOM.loginForm.addEventListener('submit', handleLogin);
-    }
-    
-    // Event: Register form submit
-    if (DOM.registerForm) {
-      DOM.registerForm.addEventListener('submit', handleRegister);
-    }
-    
-    // Event: Checkout button click
-    const checkoutBtn = document.querySelector('.checkout-button');
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', processCheckout);
+    // Add category options
+    categories.forEach(category => {
+      const categoryDiv = document.createElement('div');
+      categoryDiv.className = 'filter-option';
+      
+      const categoryLabel = document.createElement('label');
+      categoryLabel.className = 'checkbox-label';
+      
+      const categoryInput = document.createElement('input');
+      categoryInput.type = 'radio';
+      categoryInput.name = 'category';
+      categoryInput.value = category;
+      categoryInput.checked = category === currentCategory;
+      
+      categoryLabel.appendChild(categoryInput);
+      categoryLabel.appendChild(document.createTextNode(category));
+      categoryDiv.appendChild(categoryLabel);
+      DOM.categoryFilters.appendChild(categoryDiv);
+      
+      // Add event listener
+      categoryInput.addEventListener('change', () => {
+        if (categoryInput.checked) {
+          console.log(`Category ${category} selected`);
+          // Update URL with selected category
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set('category', category);
+          console.log("Redirecting to:", newUrl.toString());
+          window.location.href = newUrl.toString();
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Categories error:', error);
+    DOM.categoryFilters.innerHTML = '<div>Failed to load categories</div>';
+  }
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Check authentication status
+  checkAuth();
+  
+  // Page-specific initializations
+  const currentPath = window.location.pathname;
+  
+  if (currentPath === '/' || currentPath === '/index.html') {
+    // Home page
+    loadFeaturedProducts();
+  } else if (currentPath.startsWith('/product/')) {
+    // Product detail page
+    loadProductDetails();
+  } else if (currentPath === '/search' || currentPath === '/search.html') {
+    // Search results page
+    loadSearchResults();
+  }
+  
+  // Search form
+  if (DOM.searchForm) {
+    DOM.searchForm.addEventListener('submit', handleSearch);
+  }
+  
+  // Add to cart button clicks - UPDATED TO FIX DUPLICATE CART ADDS
+  document.addEventListener('click', event => {
+    if (event.target.classList.contains('add-to-cart-btn')) {
+      // Prevent default behavior and stop event propagation
+      event.preventDefault();
+      event.stopPropagation();
+      
+      // Get product ID and quantity
+      const productId = parseInt(event.target.dataset.productId);
+      const quantityInput = document.querySelector('.quantity-control input');
+      const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+      
+      console.log('Add to cart clicked for product:', productId, 'quantity:', quantity);
+      
+      // Show loading state
+      const originalText = event.target.innerHTML;
+      event.target.disabled = true;
+      event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+      
+      // Use the global cart instance if available
+      if (window.cart && productId) {
+        // Use the cart's addItem method
+        window.cart.addItem(productId, quantity)
+          .then(success => {
+            console.log('Product added to cart:', success);
+            
+            // Reset button state
+            event.target.disabled = false;
+            event.target.innerHTML = originalText;
+          })
+          .catch(error => {
+            console.error('Failed to add product to cart:', error);
+            
+            // Reset button state
+            event.target.disabled = false;
+            event.target.innerHTML = originalText;
+          });
+      } else {
+        console.error('Cart not initialized or product ID missing');
+        
+        // Reset button state
+        event.target.disabled = false;
+        event.target.innerHTML = originalText;
+        
+        // Show error message
+        createAlert('Failed to add product to cart. Please try again.', 'danger');
+      }
     }
   });
+  
+  // Handle search form in header
+  const headerSearchForm = document.querySelector('form[action="/search"]');
+  if (headerSearchForm) {
+    headerSearchForm.addEventListener('submit', handleSearch);
+  }
+  
+  // Remove skeleton loading classes after content has loaded
+  setTimeout(() => {
+    const skeletons = document.querySelectorAll('.skeleton');
+    skeletons.forEach(skeleton => {
+      skeleton.classList.remove('skeleton');
+    });
+  }, 1000);
+});

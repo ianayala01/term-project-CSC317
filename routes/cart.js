@@ -45,6 +45,8 @@ router.post('/', isAuth, async (req, res) => {
     const userId = req.session.user.id;
     const { productId, quantity = 1 } = req.body;
     
+    console.log('Server received add to cart request:', { userId, productId, quantity });
+    
     if (!productId) {
       return res.status(400).json({ message: 'Product ID is required' });
     }

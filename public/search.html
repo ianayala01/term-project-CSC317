@@ -18,7 +18,7 @@
         </div>
         <div class="search-bar">
           <form action="/search" method="GET" class="search-form">
-            <input type="text" name="query" placeholder="Search products..." class="search-input" required>
+            <input type="text" name="query" placeholder="Search for travel products..." class="search-input">
             <button type="submit"><i class="fas fa-search"></i></button>
           </form>
         </div>
@@ -42,7 +42,7 @@
       
       <div class="search-header">
         <h1>Search Results</h1>
-        <p class="search-query">Showing results for: <span id="search-term"></span></p>
+        <p class="search-query">Showing results for: <span id="search-term">All Products</span></p>
       </div>
       
       <div class="search-content">
@@ -57,23 +57,17 @@
           
           <div class="filter-section">
             <h3>Price Range</h3>
-            <div class="price-slider">
-              <div class="range-inputs">
-                <input type="range" min="0" max="200" value="0" class="min-price-slider">
-                <input type="range" min="0" max="200" value="200" class="max-price-slider">
+            <div class="price-inputs">
+              <div class="price-input">
+                <label for="min-price">Min Price ($)</label>
+                <input type="number" id="min-price" min="0" max="200" value="0">
               </div>
-              <div class="price-inputs">
-                <div class="price-input">
-                  <label for="min-price">Min:</label>
-                  <input type="number" id="min-price" min="0" max="200" value="0">
-                </div>
-                <div class="price-input">
-                  <label for="max-price">Max:</label>
-                  <input type="number" id="max-price" min="0" max="200" value="200">
-                </div>
+              <div class="price-input">
+                <label for="max-price">Max Price ($)</label>
+                <input type="number" id="max-price" min="0" max="200" value="200">
               </div>
-              <button type="button" class="btn btn-secondary apply-price-filter">Apply</button>
             </div>
+            <button type="button" class="btn btn-secondary apply-price-filter">Apply</button>
           </div>
           
           <div class="filter-section">
@@ -149,9 +143,9 @@
         <div class="footer-column">
           <h3>Contact</h3>
           <ul class="contact-info">
-            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
-            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
-            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> 1600 Holloway Ave, San Francisco, 94132, CA</li>
+            <li><i class="fas fa-phone"></i> +1 (669)-649-1071</li>
+            <li><i class="fas fa-envelope"></i> Ritesh@sfsu.edu</li>
           </ul>
         </div>
       </div>
@@ -170,129 +164,43 @@
   <script src="/js/cart.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Get search parameters from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const searchQuery = urlParams.get('query') || '';
-      const category = urlParams.get('category') || '';
+      // Initialize search functionality
+      loadSearchResults();
       
-      // Update search term display
-      const searchTermEl = document.getElementById('search-term');
-      if (searchTermEl) {
-        searchTermEl.textContent = searchQuery || category || 'All Products';
-      }
-      
-      // Update search input
-      const searchInput = document.querySelector('.search-input');
-      if (searchInput && searchQuery) {
-        searchInput.value = searchQuery;
-      }
-      
-      // Price range slider functionality
-      const minPriceSlider = document.querySelector('.min-price-slider');
-      const maxPriceSlider = document.querySelector('.max-price-slider');
-      const minPriceInput = document.getElementById('min-price');
-      const maxPriceInput = document.getElementById('max-price');
-      
-      if (minPriceSlider && maxPriceSlider && minPriceInput && maxPriceInput) {
-        // Set initial values from URL parameters
-        const minPrice = urlParams.get('min_price');
-        const maxPrice = urlParams.get('max_price');
-        
-        if (minPrice) {
-          minPriceSlider.value = minPrice;
-          minPriceInput.value = minPrice;
-        }
-        
-        if (maxPrice) {
-          maxPriceSlider.value = maxPrice;
-          maxPriceInput.value = maxPrice;
-        }
-        
-        // Update input when slider changes
-        minPriceSlider.addEventListener('input', () => {
-          minPriceInput.value = minPriceSlider.value;
+      // Price filter
+      const applyPriceFilterBtn = document.querySelector('.apply-price-filter');
+      if (applyPriceFilterBtn) {
+        applyPriceFilterBtn.addEventListener('click', () => {
+          const minPrice = document.getElementById('min-price').value;
+          const maxPrice = document.getElementById('max-price').value;
           
-          // Make sure min price doesn't exceed max price
-          if (parseInt(minPriceSlider.value) > parseInt(maxPriceSlider.value)) {
-            maxPriceSlider.value = minPriceSlider.value;
-            maxPriceInput.value = minPriceSlider.value;
-          }
-        });
-        
-        maxPriceSlider.addEventListener('input', () => {
-          maxPriceInput.value = maxPriceSlider.value;
+          // Update URL with price parameters
+          const urlParams = new URLSearchParams(window.location.search);
+          urlParams.set('min_price', minPrice);
+          urlParams.set('max_price', maxPrice);
           
-          // Make sure max price doesn't go below min price
-          if (parseInt(maxPriceSlider.value) < parseInt(minPriceSlider.value)) {
-            minPriceSlider.value = maxPriceSlider.value;
-            minPriceInput.value = maxPriceSlider.value;
-          }
+          window.location.search = urlParams.toString();
         });
-        
-        // Update slider when input changes
-        minPriceInput.addEventListener('change', () => {
-          minPriceSlider.value = minPriceInput.value;
-          
-          // Make sure min price doesn't exceed max price
-          if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
-            maxPriceInput.value = minPriceInput.value;
-            maxPriceSlider.value = minPriceInput.value;
-          }
-        });
-        
-        maxPriceInput.addEventListener('change', () => {
-          maxPriceSlider.value = maxPriceInput.value;
-          
-          // Make sure max price doesn't go below min price
-          if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
-            minPriceInput.value = maxPriceInput.value;
-            minPriceSlider.value = maxPriceInput.value;
-          }
-        });
-        
-        // Apply price filter
-        const applyPriceFilterBtn = document.querySelector('.apply-price-filter');
-        if (applyPriceFilterBtn) {
-          applyPriceFilterBtn.addEventListener('click', () => {
-            // Update URL with new price parameters
-            urlParams.set('min_price', minPriceInput.value);
-            urlParams.set('max_price', maxPriceInput.value);
-            
-            window.location.search = urlParams.toString();
-          });
-        }
       }
       
       // Sort by functionality
       const sortOptions = document.getElementById('sort-options');
       if (sortOptions) {
-        // Set initial value from URL parameters
-        const sortBy = urlParams.get('sort');
-        if (sortBy) {
-          sortOptions.value = sortBy;
-        }
-        
-        // Update when sort option changes
         sortOptions.addEventListener('change', () => {
+          const urlParams = new URLSearchParams(window.location.search);
           urlParams.set('sort', sortOptions.value);
+          
           window.location.search = urlParams.toString();
         });
       }
       
-      // Reset filters
+      // Reset filters - Updated to completely clear the URL
       const resetFiltersBtn = document.querySelector('.reset-filters');
       if (resetFiltersBtn) {
         resetFiltersBtn.addEventListener('click', () => {
-          // Keep only the query or category parameter
-          const newParams = new URLSearchParams();
-          
-          if (searchQuery) {
-            newParams.set('query', searchQuery);
-          } else if (category) {
-            newParams.set('category', category);
-          }
-          
-          window.location.search = newParams.toString();
+          console.log("Reset filters clicked");
+          // Simply redirect to the search page without any parameters
+          window.location.href = '/search';
         });
       }
     });

@@ -18,12 +18,12 @@
         </div>
         <div class="search-bar">
           <form action="/search" method="GET">
-            <input type="text" name="query" placeholder="Search products..." required>
+            <input type="text" name="query" placeholder="Search for travel products..." required>
             <button type="submit"><i class="fas fa-search"></i></button>
           </form>
         </div>
         <ul class="nav-links">
-          <li><a href="/">Home</a></li>
+          <li><a href="/" class="active">Home</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/faq">FAQ</a></li>
           <li class="auth-nav"><a href="/login">Login</a></li>
@@ -51,37 +51,20 @@
         <h2>Featured Products</h2>
         <p>Handpicked essentials for your next adventure</p>
       </div>
-      <div class="products-grid">
-        <!-- Products will be loaded dynamically via JavaScript -->
-        <div class="product-card skeleton">
-          <div class="product-img"></div>
-          <div class="product-info">
-            <h3 class="product-title"></h3>
-            <div class="product-category"></div>
-            <div class="product-price"></div>
-            <div class="product-button"></div>
-          </div>
+      
+      <div class="featured-products-rows">
+        <!-- First row of featured products - will be populated by JavaScript -->
+        <div class="products-grid">
+          <!-- Products will be loaded dynamically via JavaScript -->
         </div>
-        <div class="product-card skeleton">
-          <div class="product-img"></div>
-          <div class="product-info">
-            <h3 class="product-title"></h3>
-            <div class="product-category"></div>
-            <div class="product-price"></div>
-            <div class="product-button"></div>
-          </div>
-        </div>
-        <div class="product-card skeleton">
-          <div class="product-img"></div>
-          <div class="product-info">
-            <h3 class="product-title"></h3>
-            <div class="product-category"></div>
-            <div class="product-price"></div>
-            <div class="product-button"></div>
-          </div>
+        
+        <!-- Second row of featured products - will be populated by JavaScript -->
+        <div class="products-grid">
+          <!-- Products will be loaded dynamically via JavaScript -->
         </div>
       </div>
-      <div class="text-center" style="margin-top: 2rem;">
+      
+      <div class="text-center" style="margin-top: 2rem; text-align: center;">
         <a href="/search" class="btn btn-secondary">View All Products</a>
       </div>
     </div>
@@ -94,6 +77,8 @@
         <h2>Shop by Category</h2>
         <p>Find exactly what you need for your travels</p>
       </div>
+      
+      <!-- First row of categories -->
       <div class="categories-grid">
         <a href="/search?category=Bags" class="category-card">
           <img src="/images/icons/bag.svg" alt="Bags">
@@ -115,15 +100,29 @@
           <h3>Comfort</h3>
           <p>Neck pillows, eye masks, and relaxation</p>
         </a>
+      </div>
+      
+      <!-- Second row of categories -->
+      <div class="categories-grid">
         <a href="/search?category=Organization" class="category-card">
           <img src="/images/icons/organization.svg" alt="Organization">
           <h3>Organization</h3>
           <p>Packing cubes, toiletry kits, and organizers</p>
         </a>
-        <a href="/search?category=Books" class="category-card">
-          <img src="/images/icons/book.svg" alt="Books">
-          <h3>Books</h3>
-          <p>Guidebooks, journals, and travel reads</p>
+        <a href="/search?category=Wildlife" class="category-card">
+          <img src="/images/icons/wildlife.svg" alt="Wildlife">
+          <h3>Wildlife</h3>
+          <p>Camping, outdoor gear, and exploration</p>
+        </a>
+        <a href="/search?category=Safety" class="category-card">
+          <img src="/images/icons/safety.svg" alt="Safety">
+          <h3>Safety</h3>
+          <p>First aid, security, and emergency items</p>
+        </a>
+        <a href="/search?category=Clothing" class="category-card">
+          <img src="/images/icons/clothing.svg" alt="Clothing">
+          <h3>Clothing</h3>
+          <p>Travel-friendly apparel and footwear</p>
         </a>
       </div>
     </div>
@@ -174,7 +173,7 @@
         <form class="newsletter-form" data-validate>
           <div class="form-group">
             <input type="email" name="email" placeholder="Your email address" required>
-            <button type="submit" class="btn">Subscribe</button>
+            <button type="submit" class="btn subscribe-btn">Subscribe</button>
           </div>
         </form>
       </div>
@@ -197,6 +196,7 @@
             <a href="#"><i class="fab fa-pinterest"></i></a>
           </div>
         </div>
+        
         <div class="footer-column">
           <h3>Quick Links</h3>
           <ul>
@@ -207,6 +207,7 @@
             <li><a href="/contact">Contact</a></li>
           </ul>
         </div>
+        
         <div class="footer-column">
           <h3>Categories</h3>
           <ul>
@@ -215,14 +216,17 @@
             <li><a href="/search?category=Accessories">Accessories</a></li>
             <li><a href="/search?category=Comfort">Comfort</a></li>
             <li><a href="/search?category=Organization">Organization</a></li>
+            <li><a href="/search?category=Wildlife">Wildlife</a></li>
+            <li><a href="/search?category=Safety">Safety</a></li>
           </ul>
         </div>
+        
         <div class="footer-column">
           <h3>Contact</h3>
           <ul class="contact-info">
-            <li><i class="fas fa-map-marker-alt"></i> 123 Travel Street, City, Country</li>
-            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
-            <li><i class="fas fa-envelope"></i> info@travelessentials.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> 1600 Holloway Ave, San Francisco, 94132, CA</li>
+            <li><i class="fas fa-phone"></i> +1 (669)-649-1071</li>
+            <li><i class="fas fa-envelope"></i> Ritesh@sfsu.edu</li>
           </ul>
         </div>
       </div>
