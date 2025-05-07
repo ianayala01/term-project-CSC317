@@ -26,31 +26,8 @@ Travel Essentials is a responsive web application that allows users to browse an
 - **State Management**: Local storage for guest users, database for authenticated users
 
 ## Directory Structure
-travel-essentials/
-├── app.js                      # Main application entry point
-├── data/                       # Database-related files
-│   ├── database.js             # Database connection and utilities
-│   ├── database.sqlite         # SQLite database file
-│   └── seed.js                 # Database seeding script
-├── public/                     # Static assets
-│   ├── css/
-│   │   └── styles.css          # Main stylesheet
-│   ├── images/                 # Product and UI images
-│   │   └── products/           # Product images
-│   ├── js/                     # Client-side JavaScript
-│   │   ├── auth.js             # Authentication functionality
-│   │   ├── cart.js             # Shopping cart functionality
-│   │   ├── main.js             # Main application logic
-│   │   └── validation.js       # Form validation
-│   └── *.html                  # HTML templates (index, product, cart, etc.)
-├── routes/                     # API route handlers
-│   ├── auth.js                 # Authentication routes
-│   ├── cart.js                 # Shopping cart routes
-│   ├── products.js             # Product-related routes
-│   └── users.js                # User profile routes
-├── package.json                # Project dependencies
-├── sessions.sqlite             # Session storage database
-└── update_products.js          # Script to update product data
+<pre> ```plaintext travel-essentials/ ├── app.js # Main application entry point ├── data/ │ ├── database.js # Database connection and utilities │ ├── database.sqlite # SQLite database file │ └── seed.js # Database seeding script ├── public/ │ ├── css/ │ │ └── styles.css # Main stylesheet │ ├── images/ │ │ └── products/ # Product images │ ├── js/ │ │ ├── auth.js # Authentication logic │ │ ├── cart.js # Cart functionality │ │ ├── main.js # Main app logic │ │ └── validation.js # Form validation │ └── *.html # HTML templates (index, product, cart, etc.) ├── routes/ │ ├── auth.js # Auth routes │ ├── cart.js # Cart routes │ ├── products.js # Product routes │ └── users.js # User routes ├── package.json # Project metadata and dependencies ├── sessions.sqlite # Session storage database └── update_products.js # Product update script ``` </pre>
+
 ## Installation
 
 1. Clone the repository
