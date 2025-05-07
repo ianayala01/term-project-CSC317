@@ -28,7 +28,7 @@ A complete e-commerce platform for a travel essentials store built with Node.js,
 ## Project Structure
 
 ```
-travel-essentials/
+term-project-CSC317/
 ├── public/
 │   ├── css/
 │   │   └── styles.css
