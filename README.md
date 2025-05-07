@@ -67,8 +67,8 @@ travel-essentials/
 
 1. Clone the repository
    ```
-   git clone https://github.com/yourusername/travel-essentials.git
-   cd travel-essentials
+   git clone https://github.com/ianayala01/term-project-CSC317.git
+   cd term-project-CSC317
    ```
 
 2. Install dependencies
