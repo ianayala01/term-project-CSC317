@@ -1,3 +1,4 @@
+```plaintext
 # Travel Essentials E-Commerce Website
 
 A full-featured e-commerce platform specializing in travel necessities, built with Node.js, Express.js, and SQLite. The application provides a complete shopping experience including product browsing, user authentication, shopping cart functionality, and order processing.
@@ -26,7 +27,7 @@ Travel Essentials is a responsive web application that allows users to browse an
 - **State Management**: Local storage for guest users, database for authenticated users
 
 ## Directory Structure
-```plaintext
+
 travel-essentials/
 ├── app.js                     # Main application entry point
 ├── data/
