@@ -1,4 +1,3 @@
-// Main application file for Travel Essentials E-Commerce website
 require('dotenv').config();
 
 const express = require('express');
@@ -25,10 +24,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Session configuration
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.sqlite' }),
-  secret: 'travel-essentials-secret-key',
+  secret: process.env.SESSION_SECRET || 'travel-essentials-secret-key',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+  cookie: { 
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax'
+  }
 }));
 
 // Custom middleware to make user available to all templates
@@ -37,6 +40,9 @@ app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
+
+// Set base URL for email templates
+app.locals.baseUrl = process.env.BASE_URL || `http://localhost:${PORT}`;
 
 // Routes
 app.use('/api/auth', authRoutes);

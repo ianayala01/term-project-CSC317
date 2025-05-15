@@ -1,5 +1,3 @@
-// Authentication routes for login, register, and logout
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -9,7 +7,11 @@ const sgMail = require('@sendgrid/mail');
 const emailTemplates = require('../utils/emailTemplates');
 
 // Set SendGrid API key from environment variables
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+} else {
+  console.warn('SENDGRID_API_KEY is not set. Email functionality will not work.');
+}
 
 // Middleware to check if user is authenticated
 const isAuth = (req, res, next) => {
@@ -44,22 +46,24 @@ router.post('/register', async (req, res) => {
       [name, email, hashedPassword]
     );
 
-    // Send welcome email
-    try {
-      const template = emailTemplates.welcome(name);
-      const msg = {
-        to: email,
-        from: process.env.SENDER_EMAIL,
-        subject: template.subject,
-        text: template.text,
-        html: template.html
-      };
-      
-      await sgMail.send(msg);
-      console.log('Welcome email sent successfully');
-    } catch (emailError) {
-      console.error('Error sending welcome email:', emailError);
-      // Don't return error to client, still allow registration
+    // Send welcome email if SendGrid is configured
+    if (process.env.SENDGRID_API_KEY && process.env.SENDER_EMAIL) {
+      try {
+        const template = emailTemplates.welcome(name);
+        const msg = {
+          to: email,
+          from: process.env.SENDER_EMAIL,
+          subject: template.subject,
+          text: template.text,
+          html: template.html
+        };
+        
+        await sgMail.send(msg);
+        console.log('Welcome email sent successfully');
+      } catch (emailError) {
+        console.error('Error sending welcome email:', emailError);
+        // Don't return error to client, still allow registration
+      }
     }
 
     res.status(201).json({ message: 'User created successfully', userId: result.id });
@@ -148,8 +152,8 @@ router.post('/forgot-password', async (req, res) => {
     // For security reasons, always return success even if the user doesn't exist
     res.json({ message: 'If your email exists in our system, you will receive a password reset link shortly.' });
     
-    // Only proceed with email sending if user exists
-    if (user) {
+    // Only proceed with email sending if user exists and SendGrid is configured
+    if (user && process.env.SENDGRID_API_KEY && process.env.SENDER_EMAIL) {
       // Generate a reset token
       const resetToken = crypto.randomBytes(32).toString('hex');
       const tokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
@@ -171,10 +175,11 @@ router.post('/forgot-password', async (req, res) => {
         [user.id, resetToken, tokenExpiry.toISOString()]
       );
       
-      // Base URL - change for production
-      const baseUrl = process.env.NODE_ENV === 'production' 
-        ? process.env.BASE_URL || 'https://your-production-url.com' 
-        : 'http://localhost:3000';
+      // Base URL - get from environment or fallback
+      const baseUrl = process.env.BASE_URL || 
+        (process.env.NODE_ENV === 'production' 
+          ? 'https://your-glitch-project-name.glitch.me' 
+          : 'http://localhost:3000');
       
       // Reset link URL
       const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
@@ -235,25 +240,27 @@ router.post('/reset-password', async (req, res) => {
     // Delete the used token
     await db.run('DELETE FROM reset_tokens WHERE id = ?', [tokenRecord.id]);
     
-    // Send confirmation email
-    const user = await db.get('SELECT * FROM users WHERE id = ?', [tokenRecord.user_id]);
-    
-    if (user) {
-      try {
-        const template = emailTemplates.passwordResetSuccess(user.name);
-        const msg = {
-          to: user.email,
-          from: process.env.SENDER_EMAIL,
-          subject: template.subject,
-          text: template.text,
-          html: template.html
-        };
-        
-        await sgMail.send(msg);
-        console.log('Password reset confirmation email sent successfully');
-      } catch (emailError) {
-        console.error('Error sending confirmation email:', emailError);
-        // We still continue with the success response
+    // Send confirmation email if SendGrid is configured
+    if (process.env.SENDGRID_API_KEY && process.env.SENDER_EMAIL) {
+      const user = await db.get('SELECT * FROM users WHERE id = ?', [tokenRecord.user_id]);
+      
+      if (user) {
+        try {
+          const template = emailTemplates.passwordResetSuccess(user.name);
+          const msg = {
+            to: user.email,
+            from: process.env.SENDER_EMAIL,
+            subject: template.subject,
+            text: template.text,
+            html: template.html
+          };
+          
+          await sgMail.send(msg);
+          console.log('Password reset confirmation email sent successfully');
+        } catch (emailError) {
+          console.error('Error sending confirmation email:', emailError);
+          // We still continue with the success response
+        }
       }
     }
     

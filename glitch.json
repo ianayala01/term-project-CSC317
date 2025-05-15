@@ -1,0 +1,18 @@
+{
+  "install": "npm install",
+  "start": "node app.js",
+  "watch": {
+    "ignore": [
+      "\\.git",
+      "node_modules/*",
+      "*.sqlite"
+    ],
+    "restart": {
+      "include": [
+        "\\.js$",
+        "\\.json"
+      ]
+    },
+    "throttle": 1000
+  }
+}
